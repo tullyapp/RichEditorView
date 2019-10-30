@@ -144,7 +144,8 @@ import UIKit
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.dataDetectorTypes = UIDataDetectorTypes()
         webView.backgroundColor = .white
-        
+        let rhyme = UIMenuItem(title: "Rhyme", action: #selector(runRhyme))
+        UIMenuController.shared.menuItems = [rhyme]
         webView.scrollView.isScrollEnabled = isScrollEnabled
         webView.scrollView.bounces = false
         webView.scrollView.delegate = self
@@ -164,7 +165,13 @@ import UIKit
         tapRecognizer.delegate = self
         addGestureRecognizer(tapRecognizer)
     }
-
+    @objc func runRhyme()
+    {
+        print("Rhymes")
+        print(self.contentHTML)
+        runJS("RE.replace('Hello');")
+        
+    }
     // MARK: - Rich Text Editing
 
     // MARK: Properties

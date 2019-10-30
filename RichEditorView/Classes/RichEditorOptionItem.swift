@@ -52,37 +52,31 @@ public struct RichEditorOptionItem: RichEditorOption {
 
 /// RichEditorOptions is an enum of standard editor actions
 public enum RichEditorDefaultOption: RichEditorOption {
-
-    case clear
-    case undo
-    case redo
+    
+//    case red
+//    case blue
+//    case yellow
+//    case purple
+//    case green
+//    case orange
+    case color
+    case underline
     case bold
     case italic
-    case `subscript`
-    case superscript
-    case strike
-    case underline
-    case textColor
-    case textBackgroundColor
-    case header(Int)
-    case indent
-    case outdent
-    case orderedList
-    case unorderedList
-    case alignLeft
-    case alignCenter
-    case alignRight
-    case image
-    case link
+    case fontsize
     
     public static let all: [RichEditorDefaultOption] = [
-        .clear,
-        .undo, .redo, .bold, .italic,
-        .subscript, .superscript, .strike, .underline,
-        .textColor, .textBackgroundColor,
-        .header(1), .header(2), .header(3), .header(4), .header(5), .header(6),
-        .indent, outdent, orderedList, unorderedList,
-        .alignLeft, .alignCenter, .alignRight, .image, .link
+//        .red,
+//        .blue,
+//        .yellow,
+//        .purple,
+//        .green,
+//        .orange,
+        .color,
+        .underline,
+        .bold,
+        .italic,
+        .fontsize
     ]
 
     // MARK: RichEditorOption
@@ -90,82 +84,55 @@ public enum RichEditorDefaultOption: RichEditorOption {
     public var image: UIImage? {
         var name = ""
         switch self {
-        case .clear: name = "clear"
-        case .undo: name = "undo"
-        case .redo: name = "redo"
-        case .bold: name = "bold"
-        case .italic: name = "italic"
-        case .subscript: name = "subscript"
-        case .superscript: name = "superscript"
-        case .strike: name = "strikethrough"
-        case .underline: name = "underline"
-        case .textColor: name = "text_color"
-        case .textBackgroundColor: name = "bg_color"
-        case .header(let h): name = "h\(h)"
-        case .indent: name = "indent"
-        case .outdent: name = "outdent"
-        case .orderedList: name = "ordered_list"
-        case .unorderedList: name = "unordered_list"
-        case .alignLeft: name = "justify_left"
-        case .alignCenter: name = "justify_center"
-        case .alignRight: name = "justify_right"
-        case .image: name = "insert_image"
-        case .link: name = "insert_link"
+
+//            case .red: name = "clear"
+//            case .blue: name = "clear"
+//            case .yellow: name = "clear"
+//            case .purple: name = "clear"
+//            case .green: name = "clear"
+//            case .orange: name = "clear"
+            case .color: name = "icon_Color.png"
+            case .underline: name = "icon_UnderLine.png"
+            case .bold: name = "icon_Bold.png"
+            case .italic: name = "icon_italic.png"
+            case .fontsize: name = "icon_Font.png"
         }
-        
+    
         let bundle = Bundle(for: RichEditorToolbar.self)
         return UIImage(named: name, in: bundle, compatibleWith: nil)
     }
     
     public var title: String {
         switch self {
-        case .clear: return NSLocalizedString("Clear", comment: "")
-        case .undo: return NSLocalizedString("Undo", comment: "")
-        case .redo: return NSLocalizedString("Redo", comment: "")
-        case .bold: return NSLocalizedString("Bold", comment: "")
-        case .italic: return NSLocalizedString("Italic", comment: "")
-        case .subscript: return NSLocalizedString("Sub", comment: "")
-        case .superscript: return NSLocalizedString("Super", comment: "")
-        case .strike: return NSLocalizedString("Strike", comment: "")
-        case .underline: return NSLocalizedString("Underline", comment: "")
-        case .textColor: return NSLocalizedString("Color", comment: "")
-        case .textBackgroundColor: return NSLocalizedString("BG Color", comment: "")
-        case .header(let h): return NSLocalizedString("H\(h)", comment: "")
-        case .indent: return NSLocalizedString("Indent", comment: "")
-        case .outdent: return NSLocalizedString("Outdent", comment: "")
-        case .orderedList: return NSLocalizedString("Ordered List", comment: "")
-        case .unorderedList: return NSLocalizedString("Unordered List", comment: "")
-        case .alignLeft: return NSLocalizedString("Left", comment: "")
-        case .alignCenter: return NSLocalizedString("Center", comment: "")
-        case .alignRight: return NSLocalizedString("Right", comment: "")
-        case .image: return NSLocalizedString("Image", comment: "")
-        case .link: return NSLocalizedString("Link", comment: "")
+//        case .red: return NSLocalizedString("red", comment: "")
+//        case .blue: return NSLocalizedString("blue", comment: "")
+//        case .yellow: return NSLocalizedString("yellow", comment: "")
+//        case .purple: return NSLocalizedString("purple", comment: "")
+//        case .green: return NSLocalizedString("green", comment: "")
+//        case .orange: return NSLocalizedString("orange", comment: "")
+        case .color: return NSLocalizedString("color", comment: "")
+        case .bold: return NSLocalizedString("bold", comment: "")
+        case .italic: return NSLocalizedString("italic", comment: "")
+        case .underline: return NSLocalizedString("underline", comment: "")
+        case .fontsize: return NSLocalizedString("fontsize", comment: "")
         }
     }
     
     public func action(_ toolbar: RichEditorToolbar) {
+
         switch self {
-        case .clear: toolbar.editor?.removeFormat()
-        case .undo: toolbar.editor?.undo()
-        case .redo: toolbar.editor?.redo()
-        case .bold: toolbar.editor?.bold()
-        case .italic: toolbar.editor?.italic()
-        case .subscript: toolbar.editor?.subscriptText()
-        case .superscript: toolbar.editor?.superscript()
-        case .strike: toolbar.editor?.strikethrough()
-        case .underline: toolbar.editor?.underline()
-        case .textColor: toolbar.delegate?.richEditorToolbarChangeTextColor?(toolbar)
-        case .textBackgroundColor: toolbar.delegate?.richEditorToolbarChangeBackgroundColor?(toolbar)
-        case .header(let h): toolbar.editor?.header(h)
-        case .indent: toolbar.editor?.indent()
-        case .outdent: toolbar.editor?.outdent()
-        case .orderedList: toolbar.editor?.orderedList()
-        case .unorderedList: toolbar.editor?.unorderedList()
-        case .alignLeft: toolbar.editor?.alignLeft()
-        case .alignCenter: toolbar.editor?.alignCenter()
-        case .alignRight: toolbar.editor?.alignRight()
-        case .image: toolbar.delegate?.richEditorToolbarInsertImage?(toolbar)
-        case .link: toolbar.delegate?.richEditorToolbarInsertLink?(toolbar)
+//            case .red : toolbar.delegate?.richEditorToolbarChangeTextColor?(toolbar, color: UIColor.red)
+//            case .blue : toolbar.delegate?.richEditorToolbarChangeTextColor?(toolbar, color: UIColor.blue)
+//            case .yellow : toolbar.delegate?.richEditorToolbarChangeTextColor?(toolbar, color: UIColor.yellow)
+//            case .purple : toolbar.delegate?.richEditorToolbarChangeTextColor?(toolbar, color: UIColor.purple)
+//            case .green : toolbar.delegate?.richEditorToolbarChangeTextColor?(toolbar, color: UIColor.green)
+//            case .orange : toolbar.delegate?.richEditorToolbarChangeTextColor?(toolbar, color: UIColor.orange)
+            case .color: toolbar.delegate?.textColor?(toolbar)
+            case .underline: toolbar.editor?.underline()
+            case .bold: toolbar.editor?.bold()
+            case .italic: toolbar.editor?.italic()
+            case .fontsize: toolbar.editor?.setFontSize(12)
+            
         }
     }
 }

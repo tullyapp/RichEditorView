@@ -12,7 +12,11 @@ import UIKit
 @objc public protocol RichEditorToolbarDelegate: class {
 
     /// Called when the Text Color toolbar item is pressed.
-    @objc optional func richEditorToolbarChangeTextColor(_ toolbar: RichEditorToolbar)
+    @objc optional func textColor(_ toolbar: RichEditorToolbar)
+//    @objc optional func textFont(_ toolbar: RichEditorToolbar)
+//    @objc optional func rhyme(_ toolbar: RichEditorToolbar)
+
+    @objc optional func richEditorToolbarChangeTextColor(_ toolbar: RichEditorToolbar,color: UIColor)
 
     /// Called when the Background Color toolbar item is pressed.
     @objc optional func richEditorToolbarChangeBackgroundColor(_ toolbar: RichEditorToolbar)
@@ -27,7 +31,10 @@ import UIKit
 /// RichBarButtonItem is a subclass of UIBarButtonItem that takes a callback as opposed to the target-action pattern
 @objcMembers open class RichBarButtonItem: UIBarButtonItem {
     open var actionHandler: (() -> Void)?
-    
+    var boldEnabled = false
+    var underLineEnabled = false
+    var italicEnabled = false
+    var fontEnabled = false
     public convenience init(image: UIImage? = nil, handler: (() -> Void)? = nil) {
         self.init(image: image, style: .plain, target: nil, action: nil)
         target = self
@@ -43,6 +50,15 @@ import UIKit
     }
     
     @objc func buttonWasTapped() {
+        if self.title == "bold"{
+            boldEnabled = !boldEnabled
+        }else if self.title == "italic"{
+            italicEnabled = !italicEnabled
+        }else if self.title == "underline"{
+            underLineEnabled = !underLineEnabled
+        }else if self.title == "fontsize"{
+            fontEnabled = !fontEnabled
+        }
         actionHandler?()
     }
 }
@@ -62,7 +78,7 @@ import UIKit
             updateToolbar()
         }
     }
-
+    open var enableOptions: [Int] = []
     /// The tint color to apply to the toolbar background.
     open var barTintColor: UIColor? {
         get { return backgroundToolbar.barTintColor }
@@ -100,7 +116,6 @@ import UIKit
         toolbar.backgroundColor = .clear
         toolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
         toolbar.setShadowImage(UIImage(), forToolbarPosition: .any)
-
         toolbarScroll.frame = bounds
         toolbarScroll.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         toolbarScroll.showsHorizontalScrollIndicator = false
@@ -122,19 +137,30 @@ import UIKit
                     option.action(strongSelf)
                 }
             }
-
+            var bg = UIColor.black
+            if option.title == "bold"{
+                
+            }else if option.title == "italic"{
+                
+            }else if option.title == "underline"{
+                
+            }else if option.title == "fontsize"{
+                
+            }
             if let image = option.image {
                 let button = RichBarButtonItem(image: image, handler: handler)
+                button.tintColor = bg
                 buttons.append(button)
             } else {
                 let title = option.title
                 let button = RichBarButtonItem(title: title, handler: handler)
+                button.tintColor = bg
                 buttons.append(button)
             }
         }
         toolbar.items = buttons
 
-        let defaultIconWidth: CGFloat = 28
+        let defaultIconWidth: CGFloat = 30
         let barButtonItemMargin: CGFloat = 11
         let width: CGFloat = buttons.reduce(0) {sofar, new in
             if let view = new.value(forKey: "view") as? UIView {

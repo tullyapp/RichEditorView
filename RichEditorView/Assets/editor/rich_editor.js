@@ -329,6 +329,10 @@ RE.focusAtPoint = function(x, y) {
     RE.editor.focus();
 };
 
+RE.replace = function(str) {
+    getWordPrecedingCaret(RE.editor,str);
+    RE.callback("input");
+};
 RE.blurFocus = function() {
     RE.editor.blur();
 };
@@ -417,3 +421,18 @@ RE.getRelativeCaretYPosition = function() {
 
     return y;
 };
+function getWordPrecedingCaret(containerEl, newVal) {
+    var preceding = "",
+        sel,
+        range,
+        precedingRange;
+    if (window.getSelection) {
+        sel = window.getSelection();
+        if (sel.rangeCount > 0) {
+            range = sel.getRangeAt(0).cloneRange();
+            range.deleteContents();
+            range.insertNode(document.createTextNode(newVal));
+            sel.removeAllRanges();
+        }
+    }
+}

@@ -26,6 +26,8 @@ RE.editor = document.getElementById('editor');
 // Not universally supported, but seems to work in iOS 7 and 8
 document.addEventListener("selectionchange", function() {
     RE.backuprange();
+    RE.callback("selectionchange");
+
 });
 
 //looks specifically for a Range selection and not a Caret selection
@@ -51,6 +53,10 @@ RE.editor.addEventListener("input", function() {
     RE.updatePlaceholder();
     RE.backuprange();
     RE.callback("input");
+});
+
+RE.editor.addEventListener("copy", function() {
+    RE.callback("copy");
 });
 
 RE.editor.addEventListener("focus", function() {
@@ -113,6 +119,10 @@ RE.getText = function() {
     return RE.editor.innerText;
 };
 
+RE.getSelectedText = function() {
+    return document.getSelection().toString();
+};
+
 RE.setBaseTextColor = function(color) {
     RE.editor.style.color  = color;
 };
@@ -125,7 +135,12 @@ RE.updatePlaceholder = function() {
     if (RE.editor.innerHTML.indexOf('img') !== -1 || (RE.editor.textContent.length > 0 && RE.editor.innerHTML.length > 0)) {
         RE.editor.classList.remove("placeholder");
     } else {
-        RE.editor.classList.add("placeholder");
+        if ((RE.editor.innerHTML == "") || (RE.editor.innerHTML == "<div><br></div>") || (RE.editor.innerHTML == "<br>")){
+            RE.editor.text = "";
+            RE.editor.classList.add("placeholder");
+        }else{
+            RE.editor.classList.remove("placeholder");
+        }
     }
 };
 
@@ -137,6 +152,9 @@ RE.setFontSize = function(size) {
     RE.editor.style.fontSize = size;
 };
 
+RE.setSelecedFontSize = function(size) {
+    document.execCommand("fontSize", false, size);
+};
 RE.setBackgroundColor = function(color) {
     RE.editor.style.backgroundColor = color;
 };
@@ -436,3 +454,47 @@ function getWordPrecedingCaret(containerEl, newVal) {
         }
     }
 }
+RE.selectedPosition = function() {
+    return getRectForSelectedText();
+}
+function getRectForSelectedText() {
+    var selection = window.getSelection();
+    var range = selection.getRangeAt(0);
+    var rect = range.getBoundingClientRect();
+    return  rect.left + "," + rect.top + "," + rect.width + "," + rect.height ;
+}
+
+
+
+RE.editor.addEventListener("click", function() {
+    RE.callback("click");
+});
+RE.editor.addEventListener("touchend", function() {
+    RE.callback("touch");
+});
+RE.editor.addEventListener("touchstart", function() {
+    RE.callback("touch");
+});
+
+RE.editor.addEventListener("touchmove", function() {
+    RE.callback("touch");
+});
+
+
+RE.isBold = function() {
+    window.find(document.getSelection().toString());
+    var isAllBold = document.queryCommandState("bold");
+    return isAllBold
+};
+
+RE.isItalic = function() {
+    window.find(document.getSelection().toString());
+    var isAllItalic = document.queryCommandState("italic");
+    return isAllItalic
+};
+
+RE.isUnderline = function() {
+    window.find(document.getSelection().toString());
+    var isAllUnderLine = document.queryCommandState("underline");
+    return isAllUnderLine
+};

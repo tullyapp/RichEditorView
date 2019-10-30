@@ -13,8 +13,7 @@ import UIKit
 
     /// Called when the Text Color toolbar item is pressed.
     @objc optional func textColor(_ toolbar: RichEditorToolbar)
-//    @objc optional func textFont(_ toolbar: RichEditorToolbar)
-//    @objc optional func rhyme(_ toolbar: RichEditorToolbar)
+    @objc optional func textFont(_ toolbar: RichEditorToolbar)
 
     @objc optional func richEditorToolbarChangeTextColor(_ toolbar: RichEditorToolbar,color: UIColor)
 

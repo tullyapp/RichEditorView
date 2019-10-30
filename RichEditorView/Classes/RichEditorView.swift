@@ -34,6 +34,13 @@ import UIKit
     /// Called when custom actions are called by callbacks in the JS
     /// By default, this method is not used unless called by some custom JS that you add
     @objc optional func richEditor(_ editor: RichEditorView, handle action: String)
+    
+    @objc optional func rhyme(_ editor: RichEditorView,word: String, x: Float,y: Float)
+    
+    @objc optional func currentEvents(isBold: Bool,isItalic: Bool,isUnderLine: Bool)
+
+    @objc optional func textCopied(_ editor: RichEditorView)
+
 }
 
 /// RichEditorView is a UIView that displays richly styled text, and allows it to be edited in a WYSIWYG fashion.
@@ -43,7 +50,9 @@ import UIKit
 
     /// The delegate that will receive callbacks when certain actions are completed.
     open weak var delegate: RichEditorDelegate?
-
+    var isOpenKeyBoard = false
+    var xPosition : Float = 0.0
+    var yPosition : Float = 0.0
     /// Input accessory view to display over they keyboard.
     /// Defaults to nil
     open override var inputAccessoryView: UIView? {
@@ -51,7 +60,7 @@ import UIKit
         set { webView.cjw_inputAccessoryView = newValue }
     }
 
-    /// The internal UIWebView that is used to display the text.
+//    / The internal UIWebView that is used to display the text.
     open private(set) var webView: UIWebView
 
     /// Whether or not scroll is enabled on the view.
@@ -82,7 +91,6 @@ import UIKit
             delegate?.richEditor?(self, heightDidChange: editorHeight)
         }
     }
-
     /// The value we hold in order to be able to set the line height before the JS completely loads.
     private var innerLineHeight: Int = 28
 
@@ -144,13 +152,11 @@ import UIKit
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.dataDetectorTypes = UIDataDetectorTypes()
         webView.backgroundColor = .white
-        let rhyme = UIMenuItem(title: "Rhyme", action: #selector(runRhyme))
-        UIMenuController.shared.menuItems = [rhyme]
         webView.scrollView.isScrollEnabled = isScrollEnabled
         webView.scrollView.bounces = false
         webView.scrollView.delegate = self
-        webView.scrollView.clipsToBounds = false
-        
+        webView.scrollView.clipsToBounds = true
+
         webView.cjw_inputAccessoryView = nil
         
         self.addSubview(webView)
@@ -165,11 +171,28 @@ import UIKit
         tapRecognizer.delegate = self
         addGestureRecognizer(tapRecognizer)
     }
+    func showRhyme(){
+        if self.isEditingEnabled{
+            let rhyme = UIMenuItem(title: "Rhyme", action: #selector(runRhyme))
+            UIMenuController.shared.menuItems = [rhyme]
+        }
+    }
+       func hideRhyme(){
+              UIMenuController.shared.menuItems = []
+       }
     @objc func runRhyme()
     {
-        print("Rhymes")
-        print(self.contentHTML)
-        runJS("RE.replace('Hello');")
+        let selectedposition = runJS("RE.selectedPosition();")
+        let data = selectedposition.components(separatedBy: ",")
+        if data.count >= 4{
+            print("x:  \(Float(data[0]))")
+            print("y:  \(Float(data[1]))")
+            print("width:  \(Float(data[2]))")
+            print("hight:  \(Float(data[3]))")
+            xPosition = Float(data[0])! // + Float(data[2])!
+            yPosition = Float(data[1])! // + Float(data[3])!
+            self.delegate?.rhyme?(self, word: self.selectedText, x: Float(data[0])!, y: Float(data[1])!)
+        }
         
     }
     // MARK: - Rich Text Editing
@@ -196,6 +219,9 @@ import UIKit
         return runJS("RE.getText()")
     }
 
+    public var selectedText: String {
+        return runJS("RE.getSelectedText()")
+    }
     /// Private variable that holds the placeholder text, so you can set the placeholder before the editor loads.
     private var placeholderText: String = ""
     /// The placeholder text that should be shown when there is no user input.
@@ -239,7 +265,9 @@ import UIKit
     public func setFontSize(_ size: Int) {
         runJS("RE.setFontSize('\(size)px');")
     }
-    
+    public func setSelectedFontSize(_ size: Int) {
+        runJS("RE.setSelecedFontSize('\(size)');")
+    }
     public func setEditorBackgroundColor(_ color: UIColor) {
         runJS("RE.setBackgroundColor('\(color.hex)');")
     }
@@ -280,6 +308,11 @@ import UIKit
     public func setTextColor(_ color: UIColor) {
         runJS("RE.prepareInsert();")
         runJS("RE.setTextColor('\(color.hex)');")
+    }
+    
+    public func replaceRhyme(_ rhyme: String) {
+        runJS("RE.replace('\(rhyme)');")
+        runJS("RE.focusAtPoint(\(xPosition), \(yPosition));")
     }
     
     public func setEditorFontColor(_ color: UIColor) {
@@ -372,7 +405,9 @@ import UIKit
         }
     }
 
-
+    public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        self.resignFirstResponder()
+    }
     // MARK: UIWebViewDelegate
 
     public func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
@@ -513,14 +548,17 @@ import UIKit
             let content = runJS("RE.getHtml()")
             contentHTML = content
             updateHeight()
+            self.checkEvents()
         }
         else if method.hasPrefix("updateHeight") {
             updateHeight()
         }
         else if method.hasPrefix("focus") {
+            isOpenKeyBoard = true
             delegate?.richEditorTookFocus?(self)
         }
         else if method.hasPrefix("blur") {
+            isOpenKeyBoard = false
             delegate?.richEditorLostFocus?(self)
         }
         else if method.hasPrefix("action/") {
@@ -533,9 +571,27 @@ import UIKit
             let range = method.range(of: actionPrefix)!
             let action = method.replacingCharacters(in: range, with: "")
             delegate?.richEditor?(self, handle: action)
+        }else if method.hasPrefix("selectionchange") {
+            if hasRangeSelection{
+                let text = self.selectedText.trimmingCharacters(in: .whitespacesAndNewlines)
+                if text.contains(" "){
+                    hideRhyme()
+                }else{
+                    showRhyme()
+                }
+            }else{
+                hideRhyme()
+            }
+        }else if method.hasPrefix("copy") {
+            delegate?.textCopied?(self)
+        }else{
+            self.checkEvents()
         }
     }
 
+    func checkEvents(){
+        delegate?.currentEvents?(isBold: (runJS("RE.isBold();") == "true"), isItalic: (runJS("RE.isItalic();") == "true"), isUnderLine: (runJS("RE.isUnderline();") == "true"))
+    }
     // MARK: - Responder Handling
 
     /// Called by the UITapGestureRecognizer when the user taps the view.
@@ -544,6 +600,11 @@ import UIKit
         if !webView.containsFirstResponder {
             let point = tapRecognizer.location(in: webView)
             focus(at: point)
+            self.checkEvents()
+        }else if !isOpenKeyBoard{
+            let point = tapRecognizer.location(in: webView)
+            focus(at: point)
+            self.checkEvents()
         }
     }
 

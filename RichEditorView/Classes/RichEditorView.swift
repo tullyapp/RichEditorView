@@ -105,7 +105,7 @@ import UIKit
         }
         set {
             innerLineHeight = newValue
-            runJS("RE.setLineHeight('\(innerLineHeight)px');")
+//            runJS("RE.setLineHeight('\(innerLineHeight)px');")
         }
     }
 

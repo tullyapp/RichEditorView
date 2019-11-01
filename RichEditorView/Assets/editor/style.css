@@ -23,6 +23,7 @@ html {
 body {
     min-height: 100%;
     overflow: auto;
+    background-color: #FAFAFA;
 }
 
 body, h1, p {

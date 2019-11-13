@@ -37,7 +37,7 @@ import UIKit
     
     @objc optional func rhyme(_ editor: RichEditorView,word: String, x: Float,y: Float)
     
-    @objc optional func currentEvents(isBold: Bool,isItalic: Bool,isUnderLine: Bool)
+    @objc optional func currentEvents(isBold: Bool,isItalic: Bool,isUnderLine: Bool,isStrike: Bool)
 
     @objc optional func textCopied(_ editor: RichEditorView)
 
@@ -410,6 +410,7 @@ import UIKit
     }
 
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        defaultKeyboard()
         self.resignFirstResponder()
     }
     // MARK: UIWebViewDelegate
@@ -594,7 +595,7 @@ import UIKit
     }
 
     func checkEvents(){
-        delegate?.currentEvents?(isBold: (runJS("RE.isBold();") == "true"), isItalic: (runJS("RE.isItalic();") == "true"), isUnderLine: (runJS("RE.isUnderline();") == "true"))
+        delegate?.currentEvents?(isBold: (runJS("RE.isBold();") == "true"), isItalic: (runJS("RE.isItalic();") == "true"), isUnderLine: (runJS("RE.isUnderline();") == "true"), isStrike: (runJS("RE.isStrike();") == "true"))
     }
     // MARK: - Responder Handling
 

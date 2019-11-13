@@ -498,3 +498,8 @@ RE.isUnderline = function() {
     var isAllUnderLine = document.queryCommandState("underline");
     return isAllUnderLine
 };
+RE.isStrike = function() {
+    window.find(document.getSelection().toString());
+    var isAllBold = document.queryCommandState("strikeThrough");
+    return isAllBold
+};

@@ -49,7 +49,7 @@ div {
     position: absolute;
     top: 0px;
     color: #CCCCCC;
-    font-size: 14pt;
+    font-size: 10pt;
     font-family: 'Roboto';
 }
 
@@ -59,8 +59,8 @@ div {
     overflow: auto;
     display: block;
     font-family: 'Roboto';
-    color:#2A2C37;
+    color:#0A090C;
     font-weight: normal;
-    font-size: 14pt;
+    font-size: 10pt;
     word-wrap: break-word;
 }

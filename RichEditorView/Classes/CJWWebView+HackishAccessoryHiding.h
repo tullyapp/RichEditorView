@@ -13,8 +13,8 @@
 // Bundled inside to add a vendored prefix so as to hopefully not cause naming conflicts
 @interface UIWebView (CJWHackishAccessoryHiding)
 
-// Overrides the standard inputAccessoryView
+// Overrides the standard inputView
 // Set to a custom view to override. Setting to nil will remove it.
-@property (nonatomic, strong, nullable) UIView *cjw_inputAccessoryView;
+@property (nonatomic, strong, nullable) UIView *cjw_inputView;
 
 @end

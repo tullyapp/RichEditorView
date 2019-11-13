@@ -55,9 +55,9 @@ import UIKit
     var yPosition : Float = 0.0
     /// Input accessory view to display over they keyboard.
     /// Defaults to nil
-    open override var inputAccessoryView: UIView? {
-        get { return webView.cjw_inputAccessoryView }
-        set { webView.cjw_inputAccessoryView = newValue }
+    open override var inputView: UIView? {
+        get { return webView.cjw_inputView }
+        set { webView.cjw_inputView = newValue }
     }
 
 //    / The internal UIWebView that is used to display the text.
@@ -157,7 +157,7 @@ import UIKit
         webView.scrollView.delegate = self
         webView.scrollView.clipsToBounds = true
 
-        webView.cjw_inputAccessoryView = nil
+        webView.cjw_inputView = nil
         
         self.addSubview(webView)
         
@@ -171,8 +171,8 @@ import UIKit
         tapRecognizer.delegate = self
         addGestureRecognizer(tapRecognizer)
     }
-    public func defaultKeyblard(){
-        webView.cjw_inputAccessoryView = nil
+    public func defaultKeyboard(){
+        webView.cjw_inputView = nil
         webView.reloadInputViews()
     }
     func showRhyme(){

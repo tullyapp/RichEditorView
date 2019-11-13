@@ -13,12 +13,12 @@
 static const char * const hackishFixClassName = "UIWebBrowserViewMinusView";
 static Class hackishFixClass = Nil;
 
-- (UIView *)cjw_inputAccessoryView {
-    return objc_getAssociatedObject(self, @selector(cjw_inputAccessoryView));
+- (UIView *)cjw_inputView {
+    return objc_getAssociatedObject(self, @selector(cjw_inputView));
 }
 
-- (void)setCjw_inputAccessoryView:(UIView *)view {
-    objc_setAssociatedObject(self, @selector(cjw_inputAccessoryView), view, OBJC_ASSOCIATION_RETAIN);
+- (void)setCjw_inputView:(UIView *)view {
+    objc_setAssociatedObject(self, @selector(cjw_inputView), view, OBJC_ASSOCIATION_RETAIN);
 
     UIView *browserView = [self hackishlyFoundBrowserView];
     if (browserView == nil) {
@@ -49,9 +49,9 @@ static Class hackishFixClass = Nil;
     return browserView;
 }
 
-- (id)methodReturningCustomInputAccessoryView {
+- (id)methodReturningCustomInputView {
     UIView *view = self;
-    UIView *customInputAccessoryView = nil;
+    UIView *customInputView = nil;
 
     while (view && ![view isKindOfClass:[UIWebView class]]) {
         view = view.superview;
@@ -59,18 +59,23 @@ static Class hackishFixClass = Nil;
 
     if ([view isKindOfClass:[UIWebView class]]) {
         UIWebView *webView = (UIWebView*)view;
-        customInputAccessoryView = [webView cjw_inputAccessoryView];
+        customInputView = [webView cjw_inputView];
     }
 
-    return customInputAccessoryView;
+    return customInputView;
 }
 
+- (id)methodInputAccessoryView {
+    return nil;
+}
 - (void)ensureHackishSubclassExistsOfBrowserViewClass:(Class)browserViewClass {
     if (!hackishFixClass) {
         Class newClass = objc_allocateClassPair(browserViewClass, hackishFixClassName, 0);
         newClass = objc_allocateClassPair(browserViewClass, hackishFixClassName, 0);
-        IMP nilImp = [self methodForSelector:@selector(methodReturningCustomInputAccessoryView)];
+        IMP nilImp = [self methodForSelector:@selector(methodReturningCustomInputView)];
         class_addMethod(newClass, @selector(inputView), nilImp, "@@:");
+        IMP nilImp1 = [self methodForSelector:@selector(methodInputAccessoryView)];
+        class_addMethod(newClass, @selector(inputAccessoryView), nilImp1, "@@:");
         objc_registerClassPair(newClass);
         
         hackishFixClass = newClass;

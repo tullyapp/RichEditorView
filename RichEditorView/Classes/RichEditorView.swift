@@ -41,6 +41,8 @@ import UIKit
 
     @objc optional func textCopied(_ editor: RichEditorView)
 
+    @objc optional func keyboardHide(_ editor: RichEditorView)
+
 }
 
 /// RichEditorView is a UIView that displays richly styled text, and allows it to be edited in a WYSIWYG fashion.
@@ -410,6 +412,7 @@ import UIKit
     }
 
     public func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        delegate?.keyboardHide?(self)
         defaultKeyboard()
         self.resignFirstResponder()
     }

@@ -10,7 +10,7 @@
 
 @implementation UIWebView (HackishAccessoryHiding)
 
-static const char * const hackishFixClassName = "UIWebBrowserViewMinusAccessoryView";
+static const char * const hackishFixClassName = "UIWebBrowserViewMinusView";
 static Class hackishFixClass = Nil;
 
 - (UIView *)cjw_inputAccessoryView {
@@ -70,7 +70,7 @@ static Class hackishFixClass = Nil;
         Class newClass = objc_allocateClassPair(browserViewClass, hackishFixClassName, 0);
         newClass = objc_allocateClassPair(browserViewClass, hackishFixClassName, 0);
         IMP nilImp = [self methodForSelector:@selector(methodReturningCustomInputAccessoryView)];
-        class_addMethod(newClass, @selector(inputAccessoryView), nilImp, "@@:");
+        class_addMethod(newClass, @selector(inputView), nilImp, "@@:");
         objc_registerClassPair(newClass);
         
         hackishFixClass = newClass;

@@ -171,6 +171,10 @@ import UIKit
         tapRecognizer.delegate = self
         addGestureRecognizer(tapRecognizer)
     }
+    public func defaultKeyblard(){
+        webView.cjw_inputAccessoryView = nil
+        webView.reloadInputViews()
+    }
     func showRhyme(){
         if self.isEditingEnabled{
             let rhyme = UIMenuItem(title: "Rhyme", action: #selector(runRhyme))

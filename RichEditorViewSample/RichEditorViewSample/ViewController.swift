@@ -14,32 +14,26 @@ class ViewController: UIViewController {
     @IBOutlet var editorView: RichEditorView!
     @IBOutlet var htmlTextView: UITextView!
 
-    lazy var toolbar: RichEditorToolbar = {
-        let toolbar = RichEditorToolbar(frame: CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 44))
-        toolbar.options = RichEditorDefaultOption.all
-        return toolbar
-    }()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         editorView.delegate = self
-        editorView.inputAccessoryView = toolbar
+//        editorView.inputAccessoryView = toolbar
         editorView.placeholder = "Type some text..."
-
-        toolbar.delegate = self
-        toolbar.editor = editorView
-
+        let vi = UIButton(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 300))
+        vi.addTarget(self, action: #selector(tap), for: .touchUpInside)
+        vi.backgroundColor = UIColor.red
+        editorView.inputView = vi
+//        editorView.isEditingEnabled = false
+        editorView.html = "&nbsp;bbbdhgdhdhbzbxb xb helo djdjj hhhh&nbsp;<div><span style=\"font-size: 14pt; color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%;\">g</span><b style=\"font-size: 14pt; color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%;\">rrerrf</b><u style=\"font-size: 14pt; color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic; font-weight: bold;\">fffff</u><strike style=\"font-size: 14pt; color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic;\">fff</strike><br></div><div><strike style=\"font-size: 14pt; color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic;\">gggggg</strike></div><div><strike style=\"font-size: 14pt; color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic;\">hhgt</strike><strike style=\"-webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><span style=\"color: rgb(255, 99, 43);\">fffgggggg</span><b><span style=\"color: rgb(255, 99, 43);\">&nbsp;</span><span style=\"color: rgb(255, 238, 0);\">ttt</span></b><span style=\"color: rgb(255, 238, 0);\">ccffg</span></font></strike></div><div><strike style=\"-webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b style=\"color: rgb(128, 128, 128);\">hhhh </b><b style=\"color: rgb(26, 99, 244);\">hhhh</b></font></strike></div><div style=\"text-align: left;\"><span style=\"-webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><u>derdffff<span style=\"color: rgb(255, 99, 43);\"> ff ggg.&nbsp;</span></u></b></font></span></div><div><strike style=\"color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><br></b></font></strike></div><div><span style=\"font-size: 10pt; color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><strike>h</strike><u>fgfgghh</u><strike>&nbsp;fffgbbbbbbbb</strike></b></font></span><br></div><div><strike style=\"color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><br></b></font></strike></div><div><strike style=\"color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b>&nbsp;hhh</b></font></strike></div><div><strike style=\"color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><br></b></font></strike></div><div><strike style=\"color: rgb(255, 99, 43); -webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><br></b></font></strike></div><div><strike style=\"-webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><font color=\"#211c1c\">fffggg </font>vfggv</b></font></strike></div><div><strike style=\"-webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><br></b></font></strike></div><div><strike style=\"-webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><br></b></font></strike></div><div><strike style=\"-webkit-text-size-adjust: 100%; font-style: italic;\"><font size=\"6\"><b><br></b></font></strike></div><div><font color=\"#ff632b\"><b><br></b></font></div>"
+        //"<b><font size=\"6\">Jjjjjjjjjjjjf fvdfvjfdbvvfdjb vdfjvbdvdfjvbdvdf vfdvjdfbvdfvkfdjvbdfbkvbdfvkdf dfjkg DVD’s fvdf vodka. Vfdvfd</font><button type=button>Click Me!</button>"
         // We will create a custom action that clears all the input text when it is pressed
-        let item = RichEditorOptionItem(image: nil, title: "Clear") { toolbar in
-            toolbar.editor?.html = ""
-        }
-
-        var options = toolbar.options
-        options.append(item)
-        toolbar.options = options
     }
+    @objc func tap(){
 
+    }
 }
 
 extension ViewController: RichEditorDelegate {
@@ -52,42 +46,4 @@ extension ViewController: RichEditorDelegate {
         }
     }
     
-}
-
-extension ViewController: RichEditorToolbarDelegate {
-
-    fileprivate func randomColor() -> UIColor {
-        let colors: [UIColor] = [
-            .red,
-            .orange,
-            .yellow,
-            .green,
-            .blue,
-            .purple
-        ]
-        
-        let color = colors[Int(arc4random_uniform(UInt32(colors.count)))]
-        return color
-    }
-
-    func richEditorToolbarChangeTextColor(_ toolbar: RichEditorToolbar) {
-        let color = randomColor()
-        toolbar.editor?.setTextColor(color)
-    }
-
-    func richEditorToolbarChangeBackgroundColor(_ toolbar: RichEditorToolbar) {
-        let color = randomColor()
-        toolbar.editor?.setTextBackgroundColor(color)
-    }
-
-    func richEditorToolbarInsertImage(_ toolbar: RichEditorToolbar) {
-        toolbar.editor?.insertImage("https://gravatar.com/avatar/696cf5da599733261059de06c4d1fe22", alt: "Gravatar")
-    }
-
-    func richEditorToolbarInsertLink(_ toolbar: RichEditorToolbar) {
-        // Can only add links to selected text, so make sure there is a range selection first
-        if toolbar.editor?.hasRangeSelection == true {
-            toolbar.editor?.insertLink("http://github.com/cjwirth/RichEditorView", title: "Github Link")
-        }
-    }
 }

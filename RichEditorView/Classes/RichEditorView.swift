@@ -42,7 +42,12 @@ import UIKit
     @objc optional func textCopied(_ editor: RichEditorView)
 
     @objc optional func keyboardHide(_ editor: RichEditorView)
+    
+    @objc optional func getColor(_ color: String)
+    
+    @objc optional func getFont(_ font: String)
 
+    
 }
 
 /// RichEditorView is a UIView that displays richly styled text, and allows it to be edited in a WYSIWYG fashion.
@@ -599,6 +604,8 @@ import UIKit
 
     func checkEvents(){
         delegate?.currentEvents?(isBold: (runJS("RE.isBold();") == "true"), isItalic: (runJS("RE.isItalic();") == "true"), isUnderLine: (runJS("RE.isUnderline();") == "true"), isStrike: (runJS("RE.isStrike();") == "true"))
+        delegate?.getColor?(runJS("RE.getColor();"))
+        delegate?.getFont?(runJS("RE.getFontSize();"))
     }
     // MARK: - Responder Handling
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -41,29 +41,42 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMR-YK-M0h" customClass="RichEditorView" customModule="RichEditorView">
-                                <rect key="frame" x="0.0" y="44" width="414" height="259"/>
+                                <rect key="frame" x="0.0" y="74" width="414" height="259"/>
                                 <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="259" id="bsu-3N-XOc"/>
                                 </constraints>
                             </view>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="HTML Preview" translatesAutoresizingMaskIntoConstraints="NO" id="nPH-ii-3sD">
-                                <rect key="frame" x="0.0" y="305" width="414" height="557"/>
+                                <rect key="frame" x="0.0" y="335" width="414" height="527"/>
                                 <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ttl-w6-dMX">
+                                <rect key="frame" x="20" y="44" width="374" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="SfB-wB-PhM"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="tapme:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mce-Ms-or1"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="FMR-YK-M0h" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="2aU-yH-A9U"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="nPH-ii-3sD" secondAttribute="bottom" id="6AN-Fh-gVd"/>
+                            <constraint firstItem="Ttl-w6-dMX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="7hv-U4-fXR"/>
                             <constraint firstAttribute="trailing" secondItem="FMR-YK-M0h" secondAttribute="trailing" id="FQw-wS-HfB"/>
                             <constraint firstItem="nPH-ii-3sD" firstAttribute="top" secondItem="FMR-YK-M0h" secondAttribute="bottom" constant="2" id="Lzr-Wp-Dfm"/>
                             <constraint firstItem="nPH-ii-3sD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Mu6-aT-245"/>
                             <constraint firstAttribute="trailing" secondItem="nPH-ii-3sD" secondAttribute="trailing" id="NN3-F1-Dmx"/>
-                            <constraint firstItem="FMR-YK-M0h" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="Run-Td-1WG"/>
+                            <constraint firstItem="FMR-YK-M0h" firstAttribute="top" secondItem="Ttl-w6-dMX" secondAttribute="bottom" id="YoZ-2a-o0X"/>
+                            <constraint firstItem="Ttl-w6-dMX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="b2r-2L-Fuy"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Ttl-w6-dMX" secondAttribute="trailing" id="dVP-85-ls3"/>
                             <constraint firstItem="nPH-ii-3sD" firstAttribute="top" secondItem="FMR-YK-M0h" secondAttribute="bottom" constant="2" id="jUq-Uq-KHX"/>
                         </constraints>
                     </view>

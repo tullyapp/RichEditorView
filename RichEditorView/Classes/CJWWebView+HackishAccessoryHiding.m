@@ -7,8 +7,9 @@
 
 #import <objc/runtime.h>
 #import "CJWWebView+HackishAccessoryHiding.h"
+#import <WebKit/WebKit.h>
 
-@implementation UIWebView (HackishAccessoryHiding)
+@implementation WKWebView (HackishAccessoryHiding)
 
 static const char * const hackishFixClassName = "UIWebBrowserViewMinusView";
 static Class hackishFixClass = Nil;
@@ -41,7 +42,7 @@ static Class hackishFixClass = Nil;
     UIView *browserView = nil;
     for (UIView *subview in scrollView.subviews) {
         NSString *className = NSStringFromClass([subview class]);
-        if ([className containsString:@"UI"] && [className containsString:@"Web"] && [className containsString:@"Browser"] && [className containsString:@"View"]) {
+        if (([className containsString:@"UI"] && [className containsString:@"Web"] && [className containsString:@"Browser"] && [className containsString:@"View"]) || [className containsString:@"WKContentView"]) {
             browserView = subview;
             break;
         }
@@ -53,12 +54,12 @@ static Class hackishFixClass = Nil;
     UIView *view = self;
     UIView *customInputView = nil;
 
-    while (view && ![view isKindOfClass:[UIWebView class]]) {
+    while (view && ![view isKindOfClass:[WKWebView class]]) {
         view = view.superview;
     }
 
-    if ([view isKindOfClass:[UIWebView class]]) {
-        UIWebView *webView = (UIWebView*)view;
+    if ([view isKindOfClass:[WKWebView class]]) {
+        WKWebView *webView = (WKWebView*)view;
         customInputView = [webView cjw_inputView];
     }
 

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		39FC98FB1DC788A1008FE5DD /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC98F91DC788A1008FE5DD /* String+Extensions.swift */; };
 		39FC98FC1DC788A1008FE5DD /* UIColor+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC98FA1DC788A1008FE5DD /* UIColor+Extensions.swift */; };
+		843C75D82387B9F500BD86B0 /* RichEditorWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843C75D72387B9F500BD86B0 /* RichEditorWebView.swift */; };
 		947A71A11C0F9DED00BDF9FC /* UIView+Responder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 947A71A01C0F9DED00BDF9FC /* UIView+Responder.swift */; };
 		FBA6AAFF1AD3EC9F00721644 /* RichEditorView.h in Headers */ = {isa = PBXBuildFile; fileRef = FBA6AAFE1AD3EC9F00721644 /* RichEditorView.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FBA6AB051AD3EC9F00721644 /* RichEditorView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA6AAF91AD3EC9F00721644 /* RichEditorView.framework */; };
@@ -67,8 +68,6 @@
 		FBA6AB821AD3ED2D00721644 /* undo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = FBA6AB4D1AD3ED2D00721644 /* undo@2x.png */; };
 		FBA6AB881AD3ED3C00721644 /* CJWWebView+HackishAccessoryHiding.h in Headers */ = {isa = PBXBuildFile; fileRef = FBA6AB831AD3ED3C00721644 /* CJWWebView+HackishAccessoryHiding.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FBA6AB891AD3ED3C00721644 /* CJWWebView+HackishAccessoryHiding.m in Sources */ = {isa = PBXBuildFile; fileRef = FBA6AB841AD3ED3C00721644 /* CJWWebView+HackishAccessoryHiding.m */; };
-		FBA6AB8A1AD3ED3C00721644 /* RichEditorOptionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA6AB851AD3ED3C00721644 /* RichEditorOptionItem.swift */; };
-		FBA6AB8B1AD3ED3C00721644 /* RichEditorToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA6AB861AD3ED3C00721644 /* RichEditorToolbar.swift */; };
 		FBA6AB8C1AD3ED3C00721644 /* RichEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBA6AB871AD3ED3C00721644 /* RichEditorView.swift */; };
 		FBA6ABC51AD3FD2E00721644 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FBA6ABC41AD3FD2E00721644 /* UIKit.framework */; };
 /* End PBXBuildFile section */
@@ -86,6 +85,7 @@
 /* Begin PBXFileReference section */
 		39FC98F91DC788A1008FE5DD /* String+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "String+Extensions.swift"; path = "Classes/String+Extensions.swift"; sourceTree = "<group>"; };
 		39FC98FA1DC788A1008FE5DD /* UIColor+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIColor+Extensions.swift"; path = "Classes/UIColor+Extensions.swift"; sourceTree = "<group>"; };
+		843C75D72387B9F500BD86B0 /* RichEditorWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RichEditorWebView.swift; sourceTree = SOURCE_ROOT; };
 		947A71A01C0F9DED00BDF9FC /* UIView+Responder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIView+Responder.swift"; path = "Classes/UIView+Responder.swift"; sourceTree = "<group>"; };
 		FBA6AAF91AD3EC9F00721644 /* RichEditorView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RichEditorView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FBA6AAFD1AD3EC9F00721644 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -148,8 +148,6 @@
 		FBA6AB4D1AD3ED2D00721644 /* undo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "undo@2x.png"; sourceTree = "<group>"; };
 		FBA6AB831AD3ED3C00721644 /* CJWWebView+HackishAccessoryHiding.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CJWWebView+HackishAccessoryHiding.h"; path = "Classes/CJWWebView+HackishAccessoryHiding.h"; sourceTree = "<group>"; };
 		FBA6AB841AD3ED3C00721644 /* CJWWebView+HackishAccessoryHiding.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "CJWWebView+HackishAccessoryHiding.m"; path = "Classes/CJWWebView+HackishAccessoryHiding.m"; sourceTree = "<group>"; };
-		FBA6AB851AD3ED3C00721644 /* RichEditorOptionItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RichEditorOptionItem.swift; path = Classes/RichEditorOptionItem.swift; sourceTree = "<group>"; };
-		FBA6AB861AD3ED3C00721644 /* RichEditorToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RichEditorToolbar.swift; path = Classes/RichEditorToolbar.swift; sourceTree = "<group>"; };
 		FBA6AB871AD3ED3C00721644 /* RichEditorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RichEditorView.swift; path = Classes/RichEditorView.swift; sourceTree = "<group>"; };
 		FBA6AB951AD3F3E700721644 /* RichEditorView-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "RichEditorView-Bridging-Header.h"; sourceTree = "<group>"; };
 		FBA6ABC41AD3FD2E00721644 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -236,10 +234,9 @@
 			children = (
 				FBA6AB831AD3ED3C00721644 /* CJWWebView+HackishAccessoryHiding.h */,
 				FBA6AB841AD3ED3C00721644 /* CJWWebView+HackishAccessoryHiding.m */,
-				FBA6AB851AD3ED3C00721644 /* RichEditorOptionItem.swift */,
-				FBA6AB861AD3ED3C00721644 /* RichEditorToolbar.swift */,
 				FBA6AB871AD3ED3C00721644 /* RichEditorView.swift */,
 				39FC98F91DC788A1008FE5DD /* String+Extensions.swift */,
+				843C75D72387B9F500BD86B0 /* RichEditorWebView.swift */,
 				39FC98FA1DC788A1008FE5DD /* UIColor+Extensions.swift */,
 				947A71A01C0F9DED00BDF9FC /* UIView+Responder.swift */,
 			);
@@ -488,10 +485,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FBA6AB8A1AD3ED3C00721644 /* RichEditorOptionItem.swift in Sources */,
-				FBA6AB8B1AD3ED3C00721644 /* RichEditorToolbar.swift in Sources */,
 				FBA6AB891AD3ED3C00721644 /* CJWWebView+HackishAccessoryHiding.m in Sources */,
 				FBA6AB8C1AD3ED3C00721644 /* RichEditorView.swift in Sources */,
+				843C75D82387B9F500BD86B0 /* RichEditorWebView.swift in Sources */,
 				39FC98FC1DC788A1008FE5DD /* UIColor+Extensions.swift in Sources */,
 				39FC98FB1DC788A1008FE5DD /* String+Extensions.swift in Sources */,
 				947A71A11C0F9DED00BDF9FC /* UIView+Responder.swift in Sources */,

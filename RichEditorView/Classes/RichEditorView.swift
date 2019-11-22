@@ -40,7 +40,7 @@ private let DefaultInnerLineHeight: Int = 28
     
     @objc optional func rhyme(_ editor: RichEditorView,word: String, x: Float,y: Float)
     
-    @objc optional func currentEvents(isBold: Bool,isItalic: Bool,isUnderLine: Bool,isStrike: Bool)
+//    @objc optional func currentEvents(isBold: Bool,isItalic: Bool,isUnderLine: Bool,isStrike: Bool)
 
     @objc optional func textCopied(_ editor: RichEditorView)
 

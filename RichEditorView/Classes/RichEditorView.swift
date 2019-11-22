@@ -156,7 +156,7 @@ private let DefaultInnerLineHeight: Int = 28
         super.init(coder: aDecoder)
         setup()
     }
-    
+    private let tapRecognizer = UITapGestureRecognizer()
     private func setup() {
         // configure webview
         webView.frame = bounds
@@ -175,7 +175,22 @@ private let DefaultInnerLineHeight: Int = 28
             let url = URL(fileURLWithPath: filePath, isDirectory: false)
             webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())
         }
+        tapRecognizer.addTarget(self, action: #selector(viewWasTapped))
+        tapRecognizer.delegate = self
+        addGestureRecognizer(tapRecognizer)
     }
+    @objc private func viewWasTapped() {
+        if !webView.containsFirstResponder {
+            let point = tapRecognizer.location(in: webView)
+            focus(at: point)
+            self.checkEvents()
+        }else if !isOpenKeyBoard{
+            let point = tapRecognizer.location(in: webView)
+            focus(at: point)
+            self.checkEvents()
+        }
+    }
+
     private func setHTML(_ value: String) {
         if isEditorLoaded {
             runJS("RE.setHtml('\(value.escaped)')") { _ in

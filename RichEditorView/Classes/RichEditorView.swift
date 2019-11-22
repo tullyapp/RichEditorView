@@ -163,14 +163,13 @@ private let DefaultInnerLineHeight: Int = 28
         webView.navigationDelegate = self
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.configuration.dataDetectorTypes = WKDataDetectorTypes()
-        webView.backgroundColor = .white
         webView.scrollView.isScrollEnabled = isScrollEnabled
         webView.scrollView.bounces = false
         webView.scrollView.delegate = self
         webView.scrollView.clipsToBounds = true
         webView.cjw_inputView = nil
         addSubview(webView)
-        
+        webView.isOpaque = false
         if let filePath = Bundle(for: RichEditorView.self).path(forResource: "rich_editor", ofType: "html") {
             let url = URL(fileURLWithPath: filePath, isDirectory: false)
             webView.loadFileURL(url, allowingReadAccessTo: url.deletingLastPathComponent())

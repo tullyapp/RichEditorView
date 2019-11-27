@@ -161,6 +161,7 @@ private let DefaultInnerLineHeight: Int = 28
         // configure webview
         webView.frame = bounds
         webView.navigationDelegate = self
+        webView.keyboardDisplayRequiresUserAction = false
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.configuration.dataDetectorTypes = WKDataDetectorTypes()
         webView.scrollView.isScrollEnabled = isScrollEnabled

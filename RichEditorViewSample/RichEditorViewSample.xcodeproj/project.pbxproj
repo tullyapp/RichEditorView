@@ -14,6 +14,8 @@
 		39BBCFBA1AD0CC7A00A450D2 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 39BBCFB81AD0CC7A00A450D2 /* LaunchScreen.xib */; };
 		39BBCFC61AD0CC7A00A450D2 /* RichEditorViewSampleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39BBCFC51AD0CC7A00A450D2 /* RichEditorViewSampleTests.swift */; };
 		8050D47971761721BD230098 /* Pods_RichEditorViewSample.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B08474865AD37062B47B6FC /* Pods_RichEditorViewSample.framework */; };
+		84C3D370238E7B7600FC7915 /* RichTextKeyboard.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84C3D36E238E7B7600FC7915 /* RichTextKeyboard.xib */; };
+		84C3D371238E7B7600FC7915 /* RichTextKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C3D36F238E7B7600FC7915 /* RichTextKeyboard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +42,8 @@
 		39BBCFD01AD0CD4700A450D2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		39BBCFD11AD0CD4700A450D2 /* RichEditorView.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = RichEditorView.podspec; path = ../RichEditorView.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		6B08474865AD37062B47B6FC /* Pods_RichEditorViewSample.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RichEditorViewSample.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		84C3D36E238E7B7600FC7915 /* RichTextKeyboard.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RichTextKeyboard.xib; sourceTree = "<group>"; };
+		84C3D36F238E7B7600FC7915 /* RichTextKeyboard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RichTextKeyboard.swift; sourceTree = "<group>"; };
 		996D5C7A9F5BD7BF325118C8 /* Pods.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B582B140F0E905BD9BB4CDC /* Pods-RichEditorViewSample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RichEditorViewSample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RichEditorViewSample/Pods-RichEditorViewSample.debug.xcconfig"; sourceTree = "<group>"; };
 		DF7C9E8B387E1FE81E9D90D5 /* Pods-RichEditorViewSample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RichEditorViewSample.release.xcconfig"; path = "Pods/Target Support Files/Pods-RichEditorViewSample/Pods-RichEditorViewSample.release.xcconfig"; sourceTree = "<group>"; };
@@ -98,6 +102,8 @@
 			isa = PBXGroup;
 			children = (
 				39BBCFAF1AD0CC7A00A450D2 /* AppDelegate.swift */,
+				84C3D36F238E7B7600FC7915 /* RichTextKeyboard.swift */,
+				84C3D36E238E7B7600FC7915 /* RichTextKeyboard.xib */,
 				39BBCFB11AD0CC7A00A450D2 /* ViewController.swift */,
 				39BBCFB31AD0CC7A00A450D2 /* Main.storyboard */,
 				39BBCFB61AD0CC7A00A450D2 /* Images.xcassets */,
@@ -239,6 +245,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				39BBCFB51AD0CC7A00A450D2 /* Main.storyboard in Resources */,
+				84C3D370238E7B7600FC7915 /* RichTextKeyboard.xib in Resources */,
 				39BBCFBA1AD0CC7A00A450D2 /* LaunchScreen.xib in Resources */,
 				39BBCFB71AD0CC7A00A450D2 /* Images.xcassets in Resources */,
 			);
@@ -299,6 +306,7 @@
 			files = (
 				39BBCFB21AD0CC7A00A450D2 /* ViewController.swift in Sources */,
 				39BBCFB01AD0CC7A00A450D2 /* AppDelegate.swift in Sources */,
+				84C3D371238E7B7600FC7915 /* RichTextKeyboard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

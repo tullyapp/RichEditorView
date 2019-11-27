@@ -41,27 +41,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FMR-YK-M0h" customClass="RichEditorView" customModule="RichEditorView">
-                                <rect key="frame" x="0.0" y="74" width="414" height="259"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="259"/>
                                 <color key="backgroundColor" red="0.98039215686274506" green="0.98039215686274506" blue="0.98039215686274506" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="259" id="bsu-3N-XOc"/>
                                 </constraints>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="HTML Preview" translatesAutoresizingMaskIntoConstraints="NO" id="nPH-ii-3sD">
-                                <rect key="frame" x="0.0" y="335" width="414" height="527"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="HTML Preview" translatesAutoresizingMaskIntoConstraints="NO" id="nPH-ii-3sD">
+                                <rect key="frame" x="0.0" y="343" width="414" height="519"/>
                                 <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ttl-w6-dMX">
-                                <rect key="frame" x="20" y="44" width="374" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7cL-yn-syD">
+                                <rect key="frame" x="0.0" y="303" width="414" height="40"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="SfB-wB-PhM"/>
+                                    <constraint firstAttribute="height" constant="40" id="Rbm-Xs-7CN"/>
                                 </constraints>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="KeyBoard"/>
                                 <connections>
-                                    <action selector="tapme:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Mce-Ms-or1"/>
+                                    <action selector="tapOnKeyBoard:" destination="WoP-qd-WEq" eventType="touchUpInside" id="A4p-d5-VnI"/>
+                                    <action selector="tapOnKeyBoard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MXg-6I-h7A"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -69,15 +70,14 @@
                         <constraints>
                             <constraint firstItem="FMR-YK-M0h" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="2aU-yH-A9U"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="nPH-ii-3sD" secondAttribute="bottom" id="6AN-Fh-gVd"/>
-                            <constraint firstItem="Ttl-w6-dMX" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="7hv-U4-fXR"/>
                             <constraint firstAttribute="trailing" secondItem="FMR-YK-M0h" secondAttribute="trailing" id="FQw-wS-HfB"/>
-                            <constraint firstItem="nPH-ii-3sD" firstAttribute="top" secondItem="FMR-YK-M0h" secondAttribute="bottom" constant="2" id="Lzr-Wp-Dfm"/>
+                            <constraint firstItem="nPH-ii-3sD" firstAttribute="top" secondItem="7cL-yn-syD" secondAttribute="bottom" id="MBu-up-61i"/>
                             <constraint firstItem="nPH-ii-3sD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Mu6-aT-245"/>
                             <constraint firstAttribute="trailing" secondItem="nPH-ii-3sD" secondAttribute="trailing" id="NN3-F1-Dmx"/>
-                            <constraint firstItem="FMR-YK-M0h" firstAttribute="top" secondItem="Ttl-w6-dMX" secondAttribute="bottom" id="YoZ-2a-o0X"/>
-                            <constraint firstItem="Ttl-w6-dMX" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="b2r-2L-Fuy"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="Ttl-w6-dMX" secondAttribute="trailing" id="dVP-85-ls3"/>
-                            <constraint firstItem="nPH-ii-3sD" firstAttribute="top" secondItem="FMR-YK-M0h" secondAttribute="bottom" constant="2" id="jUq-Uq-KHX"/>
+                            <constraint firstItem="7cL-yn-syD" firstAttribute="top" secondItem="FMR-YK-M0h" secondAttribute="bottom" id="aQj-aI-1aL"/>
+                            <constraint firstItem="7cL-yn-syD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="agm-nO-pGP"/>
+                            <constraint firstAttribute="trailing" secondItem="7cL-yn-syD" secondAttribute="trailing" id="cUg-UG-0QP"/>
+                            <constraint firstItem="FMR-YK-M0h" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="ptQ-YU-FUx"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="RichEditorView - Swift" id="pyE-1e-UBv"/>
@@ -88,7 +88,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1169" y="-80"/>
+            <point key="canvasLocation" x="1168.1159420289855" y="-80.357142857142847"/>
         </scene>
         <!--RichEditorView ObjC-->
         <scene sceneID="2eE-8J-Vgg">
@@ -110,23 +110,35 @@
                                 </constraints>
                             </view>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="HTML Preview" translatesAutoresizingMaskIntoConstraints="NO" id="fau-Ce-Elw">
-                                <rect key="frame" x="0.0" y="349" width="414" height="513"/>
+                                <rect key="frame" x="0.0" y="387" width="414" height="475"/>
                                 <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wDo-EU-qyb">
+                                <rect key="frame" x="20" y="347" width="374" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="RAS-D1-YoR"/>
+                                </constraints>
+                                <state key="normal" title="KeyBoard"/>
+                                <connections>
+                                    <action selector="tapOnKeyBoard:" destination="WoP-qd-WEq" eventType="touchUpInside" id="4y8-f5-lAr"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="BVN-33-ljg" secondAttribute="trailing" id="4SA-Ud-xC2"/>
                             <constraint firstItem="fau-Ce-Elw" firstAttribute="leading" secondItem="EVB-67-r9K" secondAttribute="leading" id="5Fu-Zn-gkw"/>
-                            <constraint firstItem="fau-Ce-Elw" firstAttribute="top" secondItem="BVN-33-ljg" secondAttribute="bottom" constant="2" id="9rb-ot-xAq"/>
-                            <constraint firstItem="fau-Ce-Elw" firstAttribute="top" secondItem="BVN-33-ljg" secondAttribute="bottom" constant="2" id="Cmw-fc-uhY"/>
                             <constraint firstItem="p2n-03-hDJ" firstAttribute="top" secondItem="fau-Ce-Elw" secondAttribute="bottom" id="WGr-dv-m09"/>
+                            <constraint firstItem="wDo-EU-qyb" firstAttribute="leading" secondItem="EVB-67-r9K" secondAttribute="leadingMargin" id="ZER-qh-G3M"/>
                             <constraint firstItem="BVN-33-ljg" firstAttribute="leading" secondItem="EVB-67-r9K" secondAttribute="leading" id="fGg-jZ-pTv"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="wDo-EU-qyb" secondAttribute="trailing" id="pdm-1m-jZ5"/>
+                            <constraint firstItem="wDo-EU-qyb" firstAttribute="top" secondItem="BVN-33-ljg" secondAttribute="bottom" id="sDV-9f-IDv"/>
                             <constraint firstItem="BVN-33-ljg" firstAttribute="top" secondItem="EJS-xX-Z4N" secondAttribute="bottom" id="vY0-zq-Ior"/>
                             <constraint firstAttribute="trailing" secondItem="fau-Ce-Elw" secondAttribute="trailing" id="xh9-dd-Gd3"/>
+                            <constraint firstItem="fau-Ce-Elw" firstAttribute="top" secondItem="wDo-EU-qyb" secondAttribute="bottom" id="yjj-GE-ZNl"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="RichEditorView - ObjC" id="yw4-qm-fam"/>
@@ -137,7 +149,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RJd-Me-Cq6" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1169" y="666"/>
+            <point key="canvasLocation" x="1168.1159420289855" y="665.625"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="1ha-sh-qEi">

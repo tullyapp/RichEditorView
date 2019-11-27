@@ -196,7 +196,7 @@ RE.setUnderline = function() {
 };
 
 RE.setTextColor = function(color) {
-    RE.restorerange();
+//    RE.restorerange();
     document.execCommand("styleWithCSS", null, true);
     document.execCommand('foreColor', false, color);
     document.execCommand("styleWithCSS", null, false);
@@ -500,8 +500,8 @@ RE.isUnderline = function() {
 };
 RE.isStrike = function() {
     window.find(document.getSelection().toString());
-    var isAllBold = document.queryCommandState("strikeThrough");
-    return isAllBold
+    var isStrikeThrough = document.queryCommandState("strikeThrough");
+    return isStrikeThrough
 };
 
 RE.getColor = function() {

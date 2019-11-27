@@ -157,6 +157,7 @@ private let DefaultInnerLineHeight: Int = 28
         setup()
     }
     private let tapRecognizer = UITapGestureRecognizer()
+    var lastHtml = ""
     private func setup() {
         // configure webview
         webView.frame = bounds
@@ -649,7 +650,10 @@ private let DefaultInnerLineHeight: Int = 28
             runJS("RE.getHtml()") { content in
                 self.contentHTML = content
                 self.updateHeight()
-                self.checkEvents()
+                if self.lastHtml != content{
+                    self.checkEvents()
+                }
+                self.lastHtml = content
             }
         }
         else if method.hasPrefix("updateHeight") {

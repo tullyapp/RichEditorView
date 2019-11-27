@@ -178,15 +178,35 @@ class RichTextKeyboard: UIView {
     // MARK:- Button actions from .xib file
 
     @IBAction func boldTapped(sender: UIButton) {
+        if self.boldView.backgroundColor == RichTextKeyboard.selectedColor{
+            self.boldView.backgroundColor = RichTextKeyboard.dafaultColor
+        }else{
+            self.boldView.backgroundColor = RichTextKeyboard.selectedColor
+        }
         self.delegate?.bold()
     }
     @IBAction func italicTapped(sender: UIButton) {
+        if self.italicView.backgroundColor == RichTextKeyboard.selectedColor{
+            self.italicView.backgroundColor = RichTextKeyboard.dafaultColor
+        }else{
+            self.italicView.backgroundColor = RichTextKeyboard.selectedColor
+        }
         self.delegate?.italic()
     }
     @IBAction func underLineTapped(sender: UIButton) {
+        if self.underLineView.backgroundColor == RichTextKeyboard.selectedColor{
+            self.underLineView.backgroundColor = RichTextKeyboard.dafaultColor
+        }else{
+            self.underLineView.backgroundColor = RichTextKeyboard.selectedColor
+        }
         self.delegate?.underLine()
     }
     @IBAction func strikeTapped(sender: UIButton) {
+        if self.strikeView.backgroundColor == RichTextKeyboard.selectedColor{
+            self.strikeView.backgroundColor = RichTextKeyboard.dafaultColor
+        }else{
+            self.strikeView.backgroundColor = RichTextKeyboard.selectedColor
+        }
         self.delegate?.strike()
     }
     @IBAction func smallFontTapped(sender: UIButton) {

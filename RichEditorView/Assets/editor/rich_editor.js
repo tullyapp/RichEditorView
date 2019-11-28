@@ -482,35 +482,29 @@ RE.editor.addEventListener("touchmove", function() {
 
 
 RE.isBold = function() {
-    window.find(document.getSelection().toString());
     var isAllBold = document.queryCommandState("bold");
     return isAllBold
 };
 
 RE.isItalic = function() {
-    window.find(document.getSelection().toString());
     var isAllItalic = document.queryCommandState("italic");
     return isAllItalic
 };
 
 RE.isUnderline = function() {
-    window.find(document.getSelection().toString());
     var isAllUnderLine = document.queryCommandState("underline");
     return isAllUnderLine
 };
 RE.isStrike = function() {
-    window.find(document.getSelection().toString());
     var isStrikeThrough = document.queryCommandState("strikeThrough");
     return isStrikeThrough
 };
 
 RE.getColor = function() {
-    window.find(document.getSelection().toString());
     var colour = document.queryCommandValue("ForeColor");
     return rgbToHex(colour)
 };
 RE.getFontSize = function() {
-    window.find(document.getSelection().toString());
     var fontSize = document.queryCommandValue("FontSize");
     return fontSize
 };

@@ -225,10 +225,6 @@ private let DefaultInnerLineHeight: Int = 28
         self.getselectedPosition { (str) in
             let data = str.components(separatedBy: ",")
             if data.count >= 4{
-                print("x:  \(Float(data[0]))")
-                print("y:  \(Float(data[1]))")
-                print("width:  \(Float(data[2]))")
-                print("hight:  \(Float(data[3]))")
                 self.xPosition = Float(data[0])! // + Float(data[2])!
                 self.yPosition = Float(data[1])! // + Float(data[3])!
                 self.getSelectedText { (selectedText) in

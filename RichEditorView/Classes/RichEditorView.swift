@@ -43,6 +43,8 @@ private let DefaultInnerLineHeight: Int = 28
 //    @objc optional func currentEvents(isBold: Bool,isItalic: Bool,isUnderLine: Bool,isStrike: Bool)
 
     @objc optional func textCopied(_ editor: RichEditorView)
+    
+    @objc optional func limitReached(_ editor: RichEditorView)
 
     @objc optional func keyboardHide(_ editor: RichEditorView)
     
@@ -126,6 +128,7 @@ private let DefaultInnerLineHeight: Int = 28
     /// HTML that will be loaded into the editor view once it finishes initializing.
     public var html: String = "" {
         didSet {
+            self.lastHtml = html
             setHTML(html)
         }
     }
@@ -158,6 +161,7 @@ private let DefaultInnerLineHeight: Int = 28
     }
     private let tapRecognizer = UITapGestureRecognizer()
     var lastHtml = ""
+    var textCount = 0
     private func setup() {
         // configure webview
         webView.frame = bounds
@@ -630,13 +634,15 @@ private let DefaultInnerLineHeight: Int = 28
          if method.hasPrefix("ready") {
            // If loading for the first time, we have to set the content HTML to be displayed
            if !isEditorLoaded {
-               isEditorLoaded = true
-               setHTML(html)
-               contentHTML = html
-               contentEditable = editingEnabledVar
-               placeholder = placeholderText
-               lineHeight = DefaultInnerLineHeight
-               
+                isEditorLoaded = true
+                setHTML(html)
+                contentHTML = html
+                contentEditable = editingEnabledVar
+                placeholder = placeholderText
+                lineHeight = DefaultInnerLineHeight
+                self.getText { (text) in
+                    self.textCount = text.count
+                }
                delegate?.richEditorDidLoad?(self)
            }
            updateHeight()
@@ -646,10 +652,18 @@ private let DefaultInnerLineHeight: Int = 28
             runJS("RE.getHtml()") { content in
                 self.contentHTML = content
                 self.updateHeight()
-                if self.lastHtml != content{
-                    self.checkEvents()
+                self.getText { (text) in
+                    if text.count > 50000 && self.textCount < text.count{
+                        self.delegate?.limitReached?(self)
+                        self.html = self.lastHtml
+                    }else{
+                        self.textCount = text.count
+                        if self.lastHtml != content{
+                            self.checkEvents()
+                        }
+                        self.lastHtml = content
+                    }
                 }
-                self.lastHtml = content
             }
         }
         else if method.hasPrefix("updateHeight") {
@@ -677,19 +691,19 @@ private let DefaultInnerLineHeight: Int = 28
             }
         }else if method.hasPrefix("selectionchange") {
             hasRangeSelection(handler: { r in
-               if !r {
+                if !r {
                     self.hideRhyme()
                     return
-               }
+                }
                 self.getSelectedText { (selectedText) in
                     let text = selectedText.trimmingCharacters(in: .whitespacesAndNewlines)
-                        if text.contains(" "){
-                            self.hideRhyme()
-                        }else{
-                            self.showRhyme()
-                        }
+                    if text.contains(" "){
+                        self.hideRhyme()
+                    }else{
+                        self.showRhyme()
                     }
-                })
+                }
+            })
         }else if method.hasPrefix("copy") {
             delegate?.textCopied?(self)
         }else{

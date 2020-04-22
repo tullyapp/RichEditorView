@@ -559,9 +559,9 @@ private let DefaultInnerLineHeight: Int = 28
     }
     
     /// Text representation of the data that has been input into the editor view, if it has been loaded.
-    public func getText(handler: @escaping (String) -> Void) {
+    public func getText(handler: @escaping (String, Bool) -> Void) {
         runJS("RE.getText()") { r in
-            handler(r)
+            handler(r,self.isEditorLoaded)
         }
     }
     public func getSelectedHref(handler: @escaping (String?) -> Void) {
@@ -640,7 +640,7 @@ private let DefaultInnerLineHeight: Int = 28
                 contentEditable = editingEnabledVar
                 placeholder = placeholderText
                 lineHeight = DefaultInnerLineHeight
-                self.getText { (text) in
+                self.getText { (text, isLoaded) in
                     self.textCount = text.count
                 }
                delegate?.richEditorDidLoad?(self)
@@ -652,7 +652,7 @@ private let DefaultInnerLineHeight: Int = 28
             runJS("RE.getHtml()") { content in
                 self.contentHTML = content
                 self.updateHeight()
-                self.getText { (text) in
+                self.getText { (text, isLoaded) in
                     if text.count > 50000 && self.textCount < text.count{
                         self.delegate?.limitReached?(self)
                         self.html = self.lastHtml

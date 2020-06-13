@@ -146,6 +146,9 @@ extension ViewController: RichEditorDelegate {
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         self.present(alert, animated: true, completion: nil)
     }
+    func getRhymeWord(_ word: String) {
+        print("getRhymeWord", word)
+    }
 }
 extension ViewController: KeyboardDelegate {
     func bold() {

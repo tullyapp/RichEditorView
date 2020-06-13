@@ -508,7 +508,29 @@ RE.getFontSize = function() {
     var fontSize = document.queryCommandValue("FontSize");
     return fontSize
 };
+RE.getCursorPosition = function() {
+    return getCaretPosition();
+};
 
+let ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
+let w3 = (typeof window.getSelection != "undefined") && true;
+function getCaretPosition() {
+    var caretOffset = 0;
+    if (w3) {
+        var range = window.getSelection().getRangeAt(0);
+        var preCaretRange = range.cloneRange();
+        preCaretRange.selectNodeContents(RE.editor);
+        preCaretRange.setEnd(range.endContainer, range.endOffset);
+        caretOffset = preCaretRange.toString().length;
+    } else if (ie) {
+        var textRange = document.selection.createRange();
+        var preCaretTextRange = document.body.createTextRange();
+        preCaretTextRange.moveToElementText(RE.editor);
+        preCaretTextRange.setEndPoint("EndToEnd", textRange);
+        caretOffset = preCaretTextRange.text.length;
+    }
+    return caretOffset;
+}
 function rgbToHex(rgb) {
    var a = rgb.split("(")[1].split(")")[0];
     a = a.split(",");

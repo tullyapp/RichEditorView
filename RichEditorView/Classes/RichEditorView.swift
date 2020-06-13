@@ -59,6 +59,8 @@ private let DefaultInnerLineHeight: Int = 28
     @objc optional func getIsStrike(_ isStrike: Bool)
     
     @objc optional func getIsUnderLine(_ isUnderLine: Bool)
+    
+    @objc optional func getRhymeWord(_ word: String)
 
 }
 
@@ -709,6 +711,33 @@ private let DefaultInnerLineHeight: Int = 28
         }else{
             self.checkEvents()
         }
+//        runJS("RE.getCursorPositionText()") { r in
+//            print("getCursorPositionText",r)
+//
+//        }
+        runJS("RE.getCursorPosition()") { r in
+            let cursorPosition = Int(r) ?? 0
+            print("cursorPosition",cursorPosition)
+            self.getText { (text, isLoaded) in
+                let prefixString = text.substring(toIndex: cursorPosition)
+                let suffixString = text.substring(fromIndex: cursorPosition)
+                var cursorString = ""
+                let prifixStringLast = ((prefixString.count > 0) ? String(prefixString.last!) : "").trimmingCharacters(in: .whitespacesAndNewlines)
+                let suffixStringFirst = ((suffixString.count > 0) ? String(suffixString.first!) : "").trimmingCharacters(in: .whitespacesAndNewlines)
+                if prifixStringLast == "" || suffixStringFirst == ""{
+                    if suffixStringFirst != ""{
+                        cursorString = String(suffixString.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ").first ?? "")
+                    }else {
+                        cursorString = String(prefixString.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ").last ?? "")
+                    }
+                }else {
+                    let prefixLast = String(prefixString.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ").last ?? "")
+                    let  suffixFirst = String(suffixString.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ").first ?? "")
+                    cursorString = prefixLast + suffixFirst
+                }
+                self.delegate?.getRhymeWord?(cursorString)
+            }
+        }
     }
     public func isBold(handler: @escaping (String) -> Void) {
         runJS("RE.isBold();") { r in
@@ -781,4 +810,32 @@ private let DefaultInnerLineHeight: Int = 28
         return true
     }
 
+}
+
+
+extension String {
+    
+    var length: Int {
+        return count
+    }
+    
+    subscript (i: Int) -> String {
+        return self[i ..< i + 1]
+    }
+    
+    func substring(fromIndex: Int) -> String {
+        return self[min(fromIndex, length) ..< length]
+    }
+    
+    func substring(toIndex: Int) -> String {
+        return self[0 ..< max(0, toIndex)]
+    }
+    
+    subscript (r: Range<Int>) -> String {
+        let range = Range(uncheckedBounds: (lower: max(0, min(length, r.lowerBound)),
+                                            upper: min(length, max(0, r.upperBound))))
+        let start = index(startIndex, offsetBy: range.lowerBound)
+        let end = index(start, offsetBy: range.upperBound - range.lowerBound)
+        return String(self[start ..< end])
+    }
 }

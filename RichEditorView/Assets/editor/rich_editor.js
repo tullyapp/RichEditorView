@@ -509,7 +509,8 @@ RE.getFontSize = function() {
     return fontSize
 };
 RE.getCursorPosition = function() {
-    return getCaretPosition();
+    var position = window.getSelection().getRangeAt(0).startOffset;
+    return position;
 };
 
 let ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;

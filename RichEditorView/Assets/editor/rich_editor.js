@@ -513,25 +513,33 @@ RE.getCursorPosition = function() {
     return position;
 };
 
-let ie = (typeof document.selection != "undefined" && document.selection.type != "Control") && true;
-let w3 = (typeof window.getSelection != "undefined") && true;
+
+
+RE.getCursorPositionNew = function() {
+    return getCaretPosition();
+};
+
 function getCaretPosition() {
-    var caretOffset = 0;
-    if (w3) {
-        var range = window.getSelection().getRangeAt(0);
-        var preCaretRange = range.cloneRange();
-        preCaretRange.selectNodeContents(RE.editor);
-        preCaretRange.setEnd(range.endContainer, range.endOffset);
-        caretOffset = preCaretRange.toString().length;
-    } else if (ie) {
-        var textRange = document.selection.createRange();
-        var preCaretTextRange = document.body.createTextRange();
-        preCaretTextRange.moveToElementText(RE.editor);
-        preCaretTextRange.setEndPoint("EndToEnd", textRange);
-        caretOffset = preCaretTextRange.text.length;
-    }
-    return caretOffset;
+    var position = window.getSelection().getRangeAt(0).toString();
+    return position;
+
+    var caretOffset = "";
+    var range = window.getSelection().getRangeAt(0);
+    var preCaretRange = range.cloneRange();
+    preCaretRange.selectNodeContents(RE.editor);
+    preCaretRange.setEnd(range.endContainer, range.startOffset);
+    caretOffset = preCaretRange.toString().length;
+    return preCaretRange.toString();
 }
+function getCaretPosition1() {
+    let ctrl = RE.editor;
+    var CaretPos = 0;   // IE Support
+    var Sel = document.createRange();
+    Sel.moveStart('character', -ctrl.textContent.length);
+    CaretPos = Sel.text.length;
+    return (CaretPos);
+}
+
 function rgbToHex(rgb) {
    var a = rgb.split("(")[1].split(")")[0];
     a = a.split(",");
@@ -542,3 +550,33 @@ function rgbToHex(rgb) {
     b = b.join("");
     return b;
 }
+
+
+//function ReturnWord(text, caretPos) {
+//    var index = text.indexOf(caretPos);
+//    var preText = text.substring(0, caretPos);
+//    if (preText.indexOf(" ") > 0) {
+//        var words = preText.split(" ");
+//        return words[words.length - 1]; //return last word
+//    }
+//    else {
+//        return preText;
+//    }
+//}
+function getCaretPositionNew11() {
+    let ctrl = RE.editor;
+    var CaretPos = 0;   // IE Support
+//    if (document.selection) {
+//        var Sel = document.selection.createRange();
+//        Sel.moveStart('character', -ctrl.value.length);
+//        CaretPos = Sel.text.length;
+//    }else if (ctrl.selectionStart || ctrl.selectionStart == '0'){
+//        CaretPos = ctrl.selectionStart;
+//    }
+    var Sel = document.selection.createRange();
+    Sel.moveStart('character', -ctrl.value.length);
+    CaretPos = Sel.text.length;
+    return (CaretPos);
+}
+
+

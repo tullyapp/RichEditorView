@@ -711,10 +711,9 @@ private let DefaultInnerLineHeight: Int = 28
         }else{
             self.checkEvents()
         }
-//        runJS("RE.getCursorPositionText()") { r in
-//            print("getCursorPositionText",r)
-//
-//        }
+        runJS("RE.getCursorPositionNew()") { r in
+            print("getCursorPositionNew",r)
+        }
         runJS("RE.getCursorPosition()") { r in
             let cursorPosition = Int(r) ?? 0
             print("cursorPosition",cursorPosition)

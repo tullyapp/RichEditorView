@@ -340,7 +340,13 @@ private let DefaultInnerLineHeight: Int = 28
     
     public func replaceRhymeWord(_ rhyme: String){
         runJS("RE.replaceRhyme('\(rhyme)');")
+        self.scrollCaretToVisible()
     }
+    
+    public func rhymeModeEnable(){
+        self.scrollCaretToVisible()
+    }
+    
     public func setEditorFontColor(_ color: UIColor) {
         runJS("RE.setBaseTextColor('\(color.hex)');")
     }

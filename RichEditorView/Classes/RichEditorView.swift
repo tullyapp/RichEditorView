@@ -667,6 +667,10 @@ private let DefaultInnerLineHeight: Int = 28
                     }
                 }
             }
+            runJS("RE.getTestValue()") { r in
+                print("getTestValue",r)
+            }
+
         }
         else if method.hasPrefix("updateHeight") {
             updateHeight()
@@ -709,11 +713,23 @@ private let DefaultInnerLineHeight: Int = 28
         }else if method.hasPrefix("copy") {
             delegate?.textCopied?(self)
         }else{
+            if method.hasPrefix("click") || method.hasPrefix("touch"){
+                runJS("RE.getTestValue()") { r in
+                    print("getTestValue",r)
+                }
+
+            }
             self.checkEvents()
         }
         runJS("RE.getCursorPositionNew()") { r in
             print("getCursorPositionNew",r)
         }
+//        runJS("RE.getTestValue()") { r in
+//            print("getTestValue",r)
+//        }
+//        runJS("RE.cursor_positionF()") { r in
+//            print("cursor_positionF",r)
+//        }
         runJS("RE.getCursorPosition()") { r in
             let cursorPosition = Int(r) ?? 0
             print("cursorPosition",cursorPosition)

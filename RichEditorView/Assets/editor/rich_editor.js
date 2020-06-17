@@ -508,45 +508,14 @@ RE.getFontSize = function() {
     var fontSize = document.queryCommandValue("FontSize");
     return fontSize
 };
-RE.getCursorPosition = function() {
-    var position = window.getSelection().getRangeAt(0).startOffset;
-    return position;
-};
-
-
-
-RE.getCursorPositionNew = function() {
-    return getCaretPosition();
-};
 
 RE.getTestValue = function() {
     return getLastWord();
 };
 
-//RE.cursor_positionF = function() {
-//    return cursor_position();
-//};
-
-function getCaretPosition() {
-    var position = window.getSelection().getRangeAt(0).toString();
-    return position;
-
-    var caretOffset = "";
-    var range = window.getSelection().getRangeAt(0);
-    var preCaretRange = range.cloneRange();
-    preCaretRange.selectNodeContents(RE.editor);
-    preCaretRange.setEnd(range.endContainer, range.startOffset);
-    caretOffset = preCaretRange.toString().length;
-    return preCaretRange.toString();
-}
-function getCaretPosition1() {
-    let ctrl = RE.editor;
-    var CaretPos = 0;   // IE Support
-    var Sel = document.createRange();
-    Sel.moveStart('character', -ctrl.textContent.length);
-    CaretPos = Sel.text.length;
-    return (CaretPos);
-}
+RE.replaceRhyme = function(str) {
+    pasteHtmlAtCaret(str);
+};
 
 function rgbToHex(rgb) {
    var a = rgb.split("(")[1].split(")")[0];
@@ -559,203 +528,76 @@ function rgbToHex(rgb) {
     return b;
 }
 
-
-//function ReturnWord(text, caretPos) {
-//    var index = text.indexOf(caretPos);
-//    var preText = text.substring(0, caretPos);
-//    if (preText.indexOf(" ") > 0) {
-//        var words = preText.split(" ");
-//        return words[words.length - 1]; //return last word
-//    }
-//    else {
-//        return preText;
-//    }
-//}
-function getCaretPositionNew11() {
-    let ctrl = RE.editor;
-    var CaretPos = 0;   // IE Support
-//    if (document.selection) {
-//        var Sel = document.selection.createRange();
-//        Sel.moveStart('character', -ctrl.value.length);
-//        CaretPos = Sel.text.length;
-//    }else if (ctrl.selectionStart || ctrl.selectionStart == '0'){
-//        CaretPos = ctrl.selectionStart;
-//    }
-    var Sel = document.selection.createRange();
-    Sel.moveStart('character', -ctrl.value.length);
-    CaretPos = Sel.text.length;
-    return (CaretPos);
-}
-
-
-
-function getInsertAtCursor(myValue) {
-    let myField = RE.editor;
-    var startPos = myField.selectionStart;
-    var endPos = myField.selectionEnd;
-    return endPos;
-    //IE support
-    if (document.selection) {
-        sel = document.selection.createRange();
-        sel.text = myValue;
-    }
-    //MOZILLA and others
-    else if (myField.selectionStart || myField.selectionStart == '0') {
-        var startPos = myField.selectionStart;
-        var endPos = myField.selectionEnd;
-        return endPos;
-//        myField.value = myField.value.substring(0, startPos)
-//            + myValue
-//            + myField.value.substring(endPos, myField.value.length);
-    } else {
-//        myField.value += myValue;
-    }
-    return 2;
-}
-
-function insertAtCursor(myValue) {
-    let myField = RE.editor;
-    //IE support
-    if (document.selection) {
-        sel = document.selection.createRange();
-        sel.text = myValue;
-    }
-    //MOZILLA and others
-    else if (myField.selectionStart || myField.selectionStart == '0') {
-        var startPos = myField.selectionStart;
-        var endPos = myField.selectionEnd;
-        myField.value = myField.value.substring(0, startPos)
-            + myValue
-            + myField.value.substring(endPos, myField.value.length);
-    } else {
-        myField.value += myValue;
-    }
-}
-
-function getCaretCharacterOffsetWithin() {
-    let element = RE.editor;
-    var caretOffset = 0;
-    var caretOffset1 = "";
-    var doc = element.ownerDocument || element.document;
-    var win = doc.defaultView || doc.parentWindow;
-    var sel;
-    if (typeof win.getSelection != "undefined") {
-        sel = win.getSelection();
-        if (sel.rangeCount > 0) {
-            var range = win.getSelection().getRangeAt(0);
-            var preCaretRange = range.cloneRange();
-            preCaretRange.selectNodeContents(element);
-            preCaretRange.setEnd(range.endContainer, range.endOffset);
-            caretOffset = preCaretRange.toString().length;
-        }
-    } else if ( (sel = doc.selection) && sel.type != "Control") {
-        var textRange = sel.createRange();
-        var preCaretTextRange = doc.body.createTextRange();
-        preCaretTextRange.moveToElementText(element);
-        preCaretTextRange.setEndPoint("EndToEnd", textRange);
-        caretOffset = preCaretTextRange.innerText.length;
-    }
-    return caretOffset;
-}
-
-
-function getLastWord1(){
-var selection = window.getSelection();
-     var selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            var range = selection.getRangeAt(0);
-            var text = range.startContainer.data;
-            var index = range.endOffset;
-         if(RE.editor.contentEditable == "true"){
-            if (typeof text === 'undefined' && index == 0) {
-               var text = RE.getText();
-               var shortString = text.substring(0,getCaretCharacterOffsetWithin());
-               var latword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length)
-               return latword;
-            }
-            else if (index > 0 && (text[index - 1] == ' ' || text.charCodeAt(index - 1) == 160)) {
-                // Click after a space
-                var text = range.startContainer.data;
-                var shortString = text.substring(0,index);
-                var latword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -2),shortString.length)
-                console.log(latword);
-                console.log("go gog gog gogpogpogogog ");
-                return latword;
-            }
-            else {
-              var text = RE.getText();
-              var shortString = text.substring(0,getCaretCharacterOffsetWithin());
-              var latword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length)
-              return latword;
-            }
-          }
-        }
-        else{
-         return " bhai to aaye hi nahi"
-        }
-}
-function cursor_position() {
-    var sel = document.getSelection();
-    sel.modify("extend", "backward", "paragraphboundary");
-    var pos = sel.toString().length;
-    if(sel.anchorNode != undefined) sel.collapseToEnd();
-    return pos;
-}
-
-function getCaretPosition(){
-    var el = RE.editor;
-    let tempHtml = el.innerHTML
-    
-    let str = tempHtml.replace(/<div><br><div><div>/,'sravan');
-    return str;
-    el.html = str
-    var caretOffset = 0, sel;
-    if (typeof window.getSelection !== "undefined") {
-        var range = window.getSelection().getRangeAt(0);
-        var selected = range.toString().length;
-        var preCaretRange = range.cloneRange();
-        preCaretRange.selectNodeContents(el);
-        preCaretRange.setEnd(range.endContainer, range.endOffset);
-        caretOffset = preCaretRange.toString().length - selected;
-        return preCaretRange.toString();
-    }
-    return caretOffset;
-}
-
 function getLastWord(){
     var selection = window.getSelection();
-        if (selection.rangeCount > 0) {
-            var range = selection.getRangeAt(0);
-            var text = range.startContainer.data;
-            var index = range.endOffset;
-            if(RE.editor.contentEditable == "true"){
-                if (typeof text === 'undefined' && index == 0) {
-                    var text = range.startContainer.data;
-                    var shortString = text.substring(0,index);
-                    var latword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
-                    return latword + "cccc";
-                }
-            else if (index > 0 && (text[index - 1] == ' ' || text.charCodeAt(index - 1) == 160)) {
+    if (selection.rangeCount > 0) {
+        var range = selection.getRangeAt(0);
+        var text = range.startContainer.data;
+        var index = range.endOffset;
+        if(RE.editor.contentEditable == "true"){
+            if (index > 0 && (text[index - 1] == ' ' || text.charCodeAt(index - 1) == 160)) {
                 // Click after a space
                 var text = range.startContainer.data;
-                var shortString = text.substring(0,index).replace(/^\s+|\s+$/g, "");;
-                var latword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
-                return latword + "ddd";;
+                var prefixString = text.substring(0,index)
+                var shortString = prefixString.replace(/^\s+|\s+$/g, "");
+                var shortString2 = text.substring(index,text.length);
+                var lastword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
+                if (((prefixString[prefixString.length-1] === " ") || (prefixString[prefixString.length-1] === " ")) && (shortString2[0] !== "undefined") && !((shortString2[0] === " ") || (shortString2[0] === " "))){
+                    let tempString = shortString2.replace(/^\s+|\s+$/g, "");
+                    if (tempString.length == 0){
+                        return lastword;
+                    }
+                    return tempString.split(" ")[0];
+                }
+                return lastword;
             }else {
+                if (typeof text == "undefined"){
+                    return "";
+                }
                 var text = range.startContainer.data;
                 var shortString = text.substring(0,index);
                 var shortString2 = text.substring(index,text.length);
                 var latword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
                 var addWord = "";
-//                if shortString2[0] == " "{
-//                    addWord = "888";
-//                }
-                return shortString + "5555" + shortString2 + addWord;
+                if (shortString2[0] !== " " && shortString2[0]  !== "undefined"){
+                   let tempString = shortString2.replace(/^\s+|\s+$/g, "");
+                   addWord = tempString.split(" ")[0];
+                }
+                return latword + addWord;
             }
-          }
         }
-        else{
-         return "NNNNNN"
-        }
+    }else{
+        return ""
+    }
 }
 
+function pasteHtmlAtCaret(html) {
+    var sel, range;
+    if (window.getSelection) {
+        // IE9 and non-IE
+        sel = window.getSelection();
+        if (sel.getRangeAt && sel.rangeCount) {
+            range = sel.getRangeAt(0);
+            range.deleteContents();
+            var el = document.createElement("div");
+            el.innerHTML = html;
+            var frag = document.createDocumentFragment(), node, lastNode;
+            while ( (node = el.firstChild) ) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+            
+            // Preserve the selection
+            if (lastNode) {
+                range = range.cloneRange();
+                range.setStartAfter(lastNode);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+        }
+    } else if (document.selection && document.selection.type != "Control") {
+        // IE < 9
+        document.selection.createRange().pasteHTML(html);
+    }
+}

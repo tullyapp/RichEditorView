@@ -338,6 +338,9 @@ private let DefaultInnerLineHeight: Int = 28
         runJS("RE.focusAtPoint(\(xPosition), \(yPosition));")
     }
     
+    public func replaceRhymeWord(_ rhyme: String){
+        runJS("RE.replaceRhyme('\(rhyme)');")
+    }
     public func setEditorFontColor(_ color: UIColor) {
         runJS("RE.setBaseTextColor('\(color.hex)');")
     }
@@ -720,38 +723,6 @@ private let DefaultInnerLineHeight: Int = 28
 
             }
             self.checkEvents()
-        }
-        runJS("RE.getCursorPositionNew()") { r in
-            print("getCursorPositionNew",r)
-        }
-//        runJS("RE.getTestValue()") { r in
-//            print("getTestValue",r)
-//        }
-//        runJS("RE.cursor_positionF()") { r in
-//            print("cursor_positionF",r)
-//        }
-        runJS("RE.getCursorPosition()") { r in
-            let cursorPosition = Int(r) ?? 0
-            print("cursorPosition",cursorPosition)
-            self.getText { (text, isLoaded) in
-                let prefixString = text.substring(toIndex: cursorPosition)
-                let suffixString = text.substring(fromIndex: cursorPosition)
-                var cursorString = ""
-                let prifixStringLast = ((prefixString.count > 0) ? String(prefixString.last!) : "").trimmingCharacters(in: .whitespacesAndNewlines)
-                let suffixStringFirst = ((suffixString.count > 0) ? String(suffixString.first!) : "").trimmingCharacters(in: .whitespacesAndNewlines)
-                if prifixStringLast == "" || suffixStringFirst == ""{
-                    if suffixStringFirst != ""{
-                        cursorString = String(suffixString.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ").first ?? "")
-                    }else {
-                        cursorString = String(prefixString.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ").last ?? "")
-                    }
-                }else {
-                    let prefixLast = String(prefixString.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ").last ?? "")
-                    let  suffixFirst = String(suffixString.trimmingCharacters(in: .whitespacesAndNewlines).split(separator: " ").first ?? "")
-                    cursorString = prefixLast + suffixFirst
-                }
-                self.delegate?.getRhymeWord?(cursorString)
-            }
         }
     }
     public func isBold(handler: @escaping (String) -> Void) {

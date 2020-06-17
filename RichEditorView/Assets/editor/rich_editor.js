@@ -509,7 +509,7 @@ RE.getFontSize = function() {
     return fontSize
 };
 
-RE.getTestValue = function() {
+RE.getCursrPositionValue = function() {
     return getLastWord();
 };
 

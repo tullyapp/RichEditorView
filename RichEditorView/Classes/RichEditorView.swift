@@ -670,8 +670,8 @@ private let DefaultInnerLineHeight: Int = 28
                     }
                 }
             }
-            runJS("RE.getTestValue()") { r in
-                print("getTestValue",r)
+            runJS("RE.getCursrPositionValue()") { r in
+                self.delegate?.getRhymeWord?(r)
             }
 
         }
@@ -717,10 +717,9 @@ private let DefaultInnerLineHeight: Int = 28
             delegate?.textCopied?(self)
         }else{
             if method.hasPrefix("click") || method.hasPrefix("touch"){
-                runJS("RE.getTestValue()") { r in
-                    print("getTestValue",r)
+                runJS("RE.getCursrPositionValue()") { r in
+                    self.delegate?.getRhymeWord?(r)
                 }
-
             }
             self.checkEvents()
         }

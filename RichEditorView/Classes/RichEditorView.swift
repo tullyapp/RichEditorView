@@ -340,23 +340,7 @@ private let DefaultInnerLineHeight: Int = 28
     
     public func replaceRhymeWord(_ rhyme: String){
         runJS("RE.replaceRhyme('\(rhyme)');")
-        self.scrollCaretToVisible()
-        runJS("RE.getHtml()") { content in
-            self.contentHTML = content
-            self.updateHeight()
-            self.getText { (text, isLoaded) in
-                if text.count > 50000 && self.textCount < text.count{
-                    self.delegate?.limitReached?(self)
-                    self.html = self.lastHtml
-                }else{
-                    self.textCount = text.count
-                    if self.lastHtml != content{
-                        self.checkEvents()
-                    }
-                    self.lastHtml = content
-                }
-            }
-        }
+        self.performCommand("input")
     }
     
     public func rhymeModeEnable(){

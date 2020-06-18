@@ -216,9 +216,9 @@ private let DefaultInnerLineHeight: Int = 28
             UIMenuController.shared.menuItems = [rhyme]
         }
     }
-       func hideRhyme(){
-              UIMenuController.shared.menuItems = []
-       }
+   func hideRhyme(){
+          UIMenuController.shared.menuItems = []
+   }
     public func getselectedPosition(handler: @escaping (String) -> Void) {
         runJS("RE.selectedPosition();") { r in
             handler(r)
@@ -704,21 +704,6 @@ private let DefaultInnerLineHeight: Int = 28
                 
                 self.delegate?.richEditor?(self, handle: action)
             }
-        }else if method.hasPrefix("selectionchange") {
-            hasRangeSelection(handler: { r in
-                if !r {
-                    self.hideRhyme()
-                    return
-                }
-                self.getSelectedText { (selectedText) in
-                    let text = selectedText.trimmingCharacters(in: .whitespacesAndNewlines)
-                    if text.contains(" "){
-                        self.hideRhyme()
-                    }else{
-                        self.showRhyme()
-                    }
-                }
-            })
         }else if method.hasPrefix("copy") {
             delegate?.textCopied?(self)
         }else{

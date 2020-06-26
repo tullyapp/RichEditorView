@@ -552,7 +552,7 @@ function getLastWord(){
                 return lastword;
             }else {
                 if (typeof text == "undefined"){
-                    return "";
+                    return "\n";
                 }
                 var text = range.startContainer.data;
                 var shortString = text.substring(0,index);

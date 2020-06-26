@@ -191,10 +191,12 @@ private let DefaultInnerLineHeight: Int = 28
             let point = tapRecognizer.location(in: webView)
             focus(at: point)
             self.checkEvents()
+            self.performCommand("input")
         }else if !isOpenKeyBoard{
             let point = tapRecognizer.location(in: webView)
             focus(at: point)
             self.checkEvents()
+            self.performCommand("input")
         }
     }
 

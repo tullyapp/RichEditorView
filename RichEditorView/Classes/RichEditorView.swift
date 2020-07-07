@@ -189,14 +189,34 @@ private let DefaultInnerLineHeight: Int = 28
     @objc private func viewWasTapped() {
         if !webView.containsFirstResponder {
             let point = tapRecognizer.location(in: webView)
-            focus(at: point)
-            self.checkEvents()
-            self.performCommand("input")
+            getText { (str, loading) in
+                var height : CGFloat = 0.0
+                if let font = UIFont(name: "Avenir-Medium", size: 16.0){
+                    height = str.heightWithConstrainedWidth(width: self.webView.frame.width, font: font) + (height/21.0)
+                }
+                if point.y <= height{
+                    self.focus(at: point)
+                }else{
+                    self.focus()
+                }
+                self.checkEvents()
+                self.performCommand("input")
+            }
         }else if !isOpenKeyBoard{
             let point = tapRecognizer.location(in: webView)
-            focus(at: point)
-            self.checkEvents()
-            self.performCommand("input")
+            getText { (str, loading) in
+                var height : CGFloat = 0.0
+                if let font = UIFont(name: "Avenir-Medium", size: 16.0){
+                    height = str.heightWithConstrainedWidth(width: self.webView.frame.width, font: font) + (height/21.0)
+                }
+                if point.y <= height{
+                    self.focus(at: point)
+                }else{
+                    self.focus()
+                }
+                self.checkEvents()
+                self.performCommand("input")
+            }
         }
     }
 
@@ -815,5 +835,11 @@ extension String {
         let start = index(startIndex, offsetBy: range.lowerBound)
         let end = index(start, offsetBy: range.upperBound - range.lowerBound)
         return String(self[start ..< end])
+    }
+    
+    func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedStringKey.font: font], context: nil)
+        return boundingBox.height
     }
 }

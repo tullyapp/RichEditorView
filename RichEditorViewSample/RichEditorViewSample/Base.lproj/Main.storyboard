@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
-    <customFonts key="customFonts">
-        <array key="Roboto-Regular.ttf">
-            <string>Roboto-Regular</string>
-        </array>
-    </customFonts>
     <scenes>
         <!--Navigation Controller-->
         <scene sceneID="9Mc-Tw-THQ">
@@ -48,7 +43,7 @@
                                 </constraints>
                             </view>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" editable="NO" text="HTML Preview" translatesAutoresizingMaskIntoConstraints="NO" id="nPH-ii-3sD">
-                                <rect key="frame" x="0.0" y="343" width="414" height="519"/>
+                                <rect key="frame" x="0.0" y="403" width="414" height="459"/>
                                 <color key="backgroundColor" red="0.90196079015731812" green="0.90196079015731812" blue="0.90196079015731812" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" name="CourierNewPSMT" family="Courier New" pointSize="14"/>
@@ -65,19 +60,84 @@
                                     <action selector="tapOnKeyBoard:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MXg-6I-h7A"/>
                                 </connections>
                             </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="xxX-IT-eIk">
+                                <rect key="frame" x="20" y="343" width="374" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jxH-Or-f1P">
+                                        <rect key="frame" x="0.0" y="0.0" width="122.5" height="30"/>
+                                        <state key="normal" title="red"/>
+                                        <connections>
+                                            <action selector="btn1:" destination="BYZ-38-t0r" eventType="touchUpInside" id="h7o-ZA-qCg"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zkc-hQ-ZG6">
+                                        <rect key="frame" x="125.5" y="0.0" width="123" height="30"/>
+                                        <state key="normal" title="cloud"/>
+                                        <connections>
+                                            <action selector="btn2:" destination="BYZ-38-t0r" eventType="touchUpInside" id="RSR-CH-q4A"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5b9-wV-5SJ">
+                                        <rect key="frame" x="251.5" y="0.0" width="122.5" height="30"/>
+                                        <state key="normal" title="lyrics"/>
+                                        <connections>
+                                            <action selector="btn3:" destination="BYZ-38-t0r" eventType="touchUpInside" id="esy-Ys-5wL"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="eAj-t7-80B"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="nUZ-my-FlT">
+                                <rect key="frame" x="20" y="373" width="374" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ghF-eM-YHl">
+                                        <rect key="frame" x="0.0" y="0.0" width="122.5" height="30"/>
+                                        <state key="normal" title="banglore"/>
+                                        <connections>
+                                            <action selector="btn4:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gbX-DT-PNX"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oLW-Jw-adq">
+                                        <rect key="frame" x="125.5" y="0.0" width="123" height="30"/>
+                                        <state key="normal" title="india"/>
+                                        <connections>
+                                            <action selector="btn5:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Wc2-jj-gRt"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xJb-9Y-qTj">
+                                        <rect key="frame" x="251.5" y="0.0" width="122.5" height="30"/>
+                                        <state key="normal" title="sravan"/>
+                                        <connections>
+                                            <action selector="btn6:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LfJ-xl-NAV"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="NeG-q2-W9f"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="TrI-aY-OmX"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="FMR-YK-M0h" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="2aU-yH-A9U"/>
                             <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="nPH-ii-3sD" secondAttribute="bottom" id="6AN-Fh-gVd"/>
+                            <constraint firstItem="nPH-ii-3sD" firstAttribute="top" secondItem="nUZ-my-FlT" secondAttribute="bottom" id="A1F-Hd-Kt3"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="xxX-IT-eIk" secondAttribute="trailing" id="ATy-fq-fx8"/>
+                            <constraint firstItem="nUZ-my-FlT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="F9L-J0-4Wq"/>
                             <constraint firstAttribute="trailing" secondItem="FMR-YK-M0h" secondAttribute="trailing" id="FQw-wS-HfB"/>
-                            <constraint firstItem="nPH-ii-3sD" firstAttribute="top" secondItem="7cL-yn-syD" secondAttribute="bottom" id="MBu-up-61i"/>
+                            <constraint firstItem="nUZ-my-FlT" firstAttribute="top" secondItem="xxX-IT-eIk" secondAttribute="bottom" id="Gam-qx-VcV"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="nUZ-my-FlT" secondAttribute="trailing" id="LWH-jq-kV5"/>
                             <constraint firstItem="nPH-ii-3sD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Mu6-aT-245"/>
                             <constraint firstAttribute="trailing" secondItem="nPH-ii-3sD" secondAttribute="trailing" id="NN3-F1-Dmx"/>
                             <constraint firstItem="7cL-yn-syD" firstAttribute="top" secondItem="FMR-YK-M0h" secondAttribute="bottom" id="aQj-aI-1aL"/>
                             <constraint firstItem="7cL-yn-syD" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="agm-nO-pGP"/>
+                            <constraint firstItem="xxX-IT-eIk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="ax9-8T-vtT"/>
                             <constraint firstAttribute="trailing" secondItem="7cL-yn-syD" secondAttribute="trailing" id="cUg-UG-0QP"/>
                             <constraint firstItem="FMR-YK-M0h" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="ptQ-YU-FUx"/>
+                            <constraint firstItem="xxX-IT-eIk" firstAttribute="top" secondItem="7cL-yn-syD" secondAttribute="bottom" id="qq2-HI-3Tj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="RichEditorView - Swift" id="pyE-1e-UBv"/>
@@ -88,7 +148,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1168.1159420289855" y="-80.357142857142847"/>
+            <point key="canvasLocation" x="1166.6666666666667" y="-80.357142857142847"/>
         </scene>
         <!--RichEditorView ObjC-->
         <scene sceneID="2eE-8J-Vgg">
@@ -169,7 +229,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <fontDescription key="fontDescription" name="Roboto-Regular" family="Roboto" pointSize="16"/>
+                                <fontDescription key="fontDescription" name="Avenir-Book" family="Avenir" pointSize="17"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                         </subviews>

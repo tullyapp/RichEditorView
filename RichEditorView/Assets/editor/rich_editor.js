@@ -480,6 +480,10 @@ RE.editor.addEventListener("touchmove", function() {
     RE.callback("touch");
 });
 
+RE.editor.addEventListener("onmousemove", function() {
+    RE.callback("touch");
+});
+
 
 RE.isBold = function() {
     var isAllBold = document.queryCommandState("bold");
@@ -514,7 +518,7 @@ RE.getCursrPositionValue = function() {
 };
 
 RE.replaceRhyme = function(str) {
-    pasteHtmlAtCaret(str);
+    return pasteHtmlAtCaret(RE.editor,str);
 };
 
 function rgbToHex(rgb) {
@@ -557,37 +561,77 @@ function getLastWord(){
                 var text = range.startContainer.data;
                 var shortString = text.substring(0,index);
                 var shortString2 = text.substring(index,text.length);
-                var latword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
+                var lastword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
                 var addWord = "";
                 if (shortString2[0] !== " " && shortString2[0]  !== "undefined"){
                    let tempString = shortString2.replace(/^\s+|\s+$/g, "");
                    addWord = tempString.split(" ")[0];
                 }
-                return latword + addWord;
+                return lastword + addWord;
             }
         }
     }else{
-        return ""
+        return "";
     }
 }
 
-function pasteHtmlAtCaret(html) {
-    var sel, range;
-    if (window.getSelection) {
-        // IE9 and non-IE
-        sel = window.getSelection();
-        if (sel.getRangeAt && sel.rangeCount) {
-            range = sel.getRangeAt(0);
-            range.deleteContents();
+function pasteHtmlAtCaret(e,newHtml) {
+    if (RE.getSelectedText() == "" || RE.getSelectedText() == "undefined"){
+        var elt = e;
+        var sel;
+        if (elt.isContentEditable) {  // for contenteditable
+            sel = document.getSelection();
+            sel.modify("extend", "forward", "word");
+            var range = sel.getRangeAt(0);
+            let firstChar = sel.toString()[0];
+            var isBackwardDelete = true;
+            if (firstChar){
+                if (firstChar !== " "){
+                    if (firstChar !== " ") {
+                        if(firstChar !== "\n"){
+                            if (firstChar.trim() === ""){
+                                isBackwardDelete = false;
+                            }
+                            range.deleteContents();
+                        }
+                    }
+                }
+            }
+            range.collapse(true);
+            if(isBackwardDelete == true){
+                var sel1;
+                var i = 0, n =0;
+                var isbOOlTemp = true;
+                while(isbOOlTemp){
+                    sel1 = document.getSelection();
+                    var endNode = sel1.focusNode, endOffset = sel1.focusOffset;
+                    for (i = 0; i < n; i++) {
+                      sel1.modify("move", "backward", "word");
+                    }
+                    sel1.modify("extend", "backward", "word");
+                    sel1.extend(endNode, endOffset)
+                    var selRange = sel1.toString();
+                    if (selRange){
+                        if (selRange.trim() !== ""){
+                            
+                            isbOOlTemp = false
+                        }else{
+                            n = n+1;
+                        }
+                    }else{
+                        n = n+1;
+                    }
+                }
+                var range1 = sel1.getRangeAt(0);
+                range1.deleteContents();
+            }
             var el = document.createElement("div");
-            el.innerHTML = html;
-            var frag = document.createDocumentFragment(), node, lastNode;
-            while ( (node = el.firstChild) ) {
+            el.innerHTML = newHtml;
+            var frag = document.createDocumentFragment(), node,lastNode;
+            while (node = el.firstChild) {
                 lastNode = frag.appendChild(node);
             }
             range.insertNode(frag);
-            
-            // Preserve the selection
             if (lastNode) {
                 range = range.cloneRange();
                 range.setStartAfter(lastNode);
@@ -595,9 +639,34 @@ function pasteHtmlAtCaret(html) {
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
+            range.collapse();
         }
-    } else if (document.selection && document.selection.type != "Control") {
-        // IE < 9
-        document.selection.createRange().pasteHTML(html);
+    }else{
+        var sel, range;
+        if (window.getSelection) {
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                range = sel.getRangeAt(0);
+                range.deleteContents();
+                var el = document.createElement("div");
+                el.innerHTML = newHtml;
+                var frag = document.createDocumentFragment(), node, lastNode;
+                while ( (node = el.firstChild) ) {
+                    lastNode = frag.appendChild(node);
+                }
+                range.insertNode(frag);
+                
+                // Preserve the selection
+                if (lastNode) {
+                    range = range.cloneRange();
+                    range.setStartAfter(lastNode);
+                    range.collapse(true);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+            }
+        } else if (document.selection && document.selection.type != "Control") {
+            document.selection.createRange().pasteHTML(html);
+        }
     }
 }

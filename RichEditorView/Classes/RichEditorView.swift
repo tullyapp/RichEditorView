@@ -288,21 +288,21 @@ private let DefaultInnerLineHeight: Int = 28
 //        return runJS("RE.rangeOrCaretSelectionExists();") == "true" ? true : false
 //    }
 
-    // MARK: Methods
-    /// Whether or not the selection has a type specifically of "Range".
-       public func hasRangeSelection(handler: @escaping (Bool) -> Void) {
-           runJS("RE.rangeSelectionExists()") { r in
-               handler((r == "1" || r == "true")  ? true : false)
-           }
-       }
-       
-       /// Whether or not the selection has a type specifically of "Range" or "Caret".
-       public func hasRangeOrCaretSelection(handler: @escaping (Bool) -> Void) {
-           runJS("RE.rangeOrCaretSelectionExists()") { r in
-               handler((r == "1" || r == "true") ? true : false)
-           }
-       }
-       
+// MARK: Methods
+/// Whether or not the selection has a type specifically of "Range".
+    public func hasRangeSelection(handler: @escaping (Bool) -> Void) {
+        runJS("RE.rangeSelectionExists()") { r in
+            handler((r == "1" || r == "true")  ? true : false)
+        }
+    }
+    
+    /// Whether or not the selection has a type specifically of "Range" or "Caret".
+    public func hasRangeOrCaretSelection(handler: @escaping (Bool) -> Void) {
+        runJS("RE.rangeOrCaretSelectionExists()") { r in
+            handler((r == "1" || r == "true") ? true : false)
+        }
+    }
+    
     public func removeFormat() {
         runJS("RE.removeFormat();")
     }
@@ -361,7 +361,10 @@ private let DefaultInnerLineHeight: Int = 28
     }
     
     public func replaceRhymeWord(_ rhyme: String){
-        runJS("RE.replaceRhyme('\(rhyme)');")
+//        runJS("RE.replaceRhyme('\(rhyme)');")
+        runJS("RE.replaceRhyme('\(rhyme)');") { r in
+            print("Yoyoyoyoyoyoyoyoyo",r)
+        }
         self.performCommand("input")
     }
     
@@ -436,6 +439,9 @@ private let DefaultInnerLineHeight: Int = 28
         runJS("RE.blurFocus()")
     }
 
+    public func selectRannge(word: String) {
+        runJS("RE.selectElementContents('\(word)');")
+    }
     /// Runs some JavaScript on the UIWebView and returns the result
     /// If there is no result, returns an empty string
     /// - parameter js: The JavaScript string to be run

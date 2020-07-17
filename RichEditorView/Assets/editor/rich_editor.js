@@ -16,6 +16,7 @@
  "use strict";
 
 var RE = {};
+var isBackwardShouldDelete = true;
 
 window.onload = function() {
     RE.callback("ready");
@@ -468,20 +469,25 @@ function getRectForSelectedText() {
 
 RE.editor.addEventListener("click", function() {
     RE.callback("click");
+//    RE.getCursrPositionValue();
 });
 RE.editor.addEventListener("touchend", function() {
     RE.callback("touch");
+//    RE.getCursrPositionValue();
 });
 RE.editor.addEventListener("touchstart", function() {
     RE.callback("touch");
+//    RE.getCursrPositionValue();
 });
 
 RE.editor.addEventListener("touchmove", function() {
     RE.callback("touch");
+//    RE.getCursrPositionValue();
 });
 
 RE.editor.addEventListener("onmousemove", function() {
     RE.callback("touch");
+//    RE.getCursrPositionValue();
 });
 
 
@@ -518,7 +524,7 @@ RE.getCursrPositionValue = function() {
 };
 
 RE.replaceRhyme = function(str) {
-    return pasteHtmlAtCaret(RE.editor,str);
+    pasteHtmlAtCaret(RE.editor,str);
 };
 
 function rgbToHex(rgb) {
@@ -549,13 +555,17 @@ function getLastWord(){
                 if (((prefixString[prefixString.length-1] === " ") || (prefixString[prefixString.length-1] === " ")) && (shortString2[0] !== "undefined") && !((shortString2[0] === " ") || (shortString2[0] === " "))){
                     let tempString = shortString2.replace(/^\s+|\s+$/g, "");
                     if (tempString.length == 0){
+                        isBackwardShouldDelete = true;
                         return lastword;
                     }
+                    isBackwardShouldDelete = false;
                     return tempString.split(" ")[0];
                 }
+                isBackwardShouldDelete = true;
                 return lastword;
             }else {
                 if (typeof text == "undefined"){
+                    isBackwardShouldDelete = true;
                     return "\n";
                 }
                 var text = range.startContainer.data;
@@ -567,10 +577,12 @@ function getLastWord(){
                    let tempString = shortString2.replace(/^\s+|\s+$/g, "");
                    addWord = tempString.split(" ")[0];
                 }
+                isBackwardShouldDelete = true;
                 return lastword + addWord;
             }
         }
     }else{
+        isBackwardShouldDelete = true;
         return "";
     }
 }
@@ -579,6 +591,7 @@ function pasteHtmlAtCaret(e,newHtml) {
     if (RE.getSelectedText() == "" || RE.getSelectedText() == "undefined"){
         var elt = e;
         var sel;
+        var tempText = newHtml;
         if (elt.isContentEditable) {  // for contenteditable
             sel = document.getSelection();
             sel.modify("extend", "forward", "word");
@@ -598,7 +611,7 @@ function pasteHtmlAtCaret(e,newHtml) {
                 }
             }
             range.collapse(true);
-            if(isBackwardDelete == true){
+            if((isBackwardDelete == true) && (isBackwardShouldDelete == true)){
                 var sel1;
                 var i = 0, n =0;
                 var isbOOlTemp = true;
@@ -621,12 +634,17 @@ function pasteHtmlAtCaret(e,newHtml) {
                     }else{
                         n = n+1;
                     }
+                    RE.callback("Still while loop");
                 }
                 var range1 = sel1.getRangeAt(0);
-                range1.deleteContents();
+                var selSTring = sel.toString()[sel.toString().length - 1];
+                if (selSTring != "\n"){
+                    range1.deleteContents();
+                }
+                range1.collapse(true);
             }
             var el = document.createElement("div");
-            el.innerHTML = newHtml;
+            el.innerHTML = tempText;
             var frag = document.createDocumentFragment(), node,lastNode;
             while (node = el.firstChild) {
                 lastNode = frag.appendChild(node);

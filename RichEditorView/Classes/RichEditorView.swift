@@ -361,10 +361,7 @@ private let DefaultInnerLineHeight: Int = 28
     }
     
     public func replaceRhymeWord(_ rhyme: String){
-//        runJS("RE.replaceRhyme('\(rhyme)');")
-        runJS("RE.replaceRhyme('\(rhyme)');") { r in
-            print("Yoyoyoyoyoyoyoyoyo",r)
-        }
+        runJS("RE.replaceRhyme('\(rhyme)');")
         self.performCommand("input")
     }
     
@@ -670,7 +667,10 @@ private let DefaultInnerLineHeight: Int = 28
     /// Called when actions are received from JavaScript
     /// - parameter method: String with the name of the method and optional parameters that were passed in
     private func performCommand(_ method: String) {
-         if method.hasPrefix("ready") {
+        //Still while loop
+         if method.hasPrefix("Still while loop") {
+            print("Still while loop")
+         }else if method.hasPrefix("ready") {
            // If loading for the first time, we have to set the content HTML to be displayed
            if !isEditorLoaded {
                 isEditorLoaded = true
@@ -735,10 +735,8 @@ private let DefaultInnerLineHeight: Int = 28
         }else if method.hasPrefix("copy") {
             delegate?.textCopied?(self)
         }else{
-            if method.hasPrefix("click") || method.hasPrefix("touch"){
-                runJS("RE.getCursrPositionValue()") { r in
-                    self.delegate?.getRhymeWord?(r)
-                }
+            runJS("RE.getCursrPositionValue()") { r in
+                self.delegate?.getRhymeWord?(r)
             }
             self.checkEvents()
         }

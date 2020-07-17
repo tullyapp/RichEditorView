@@ -592,6 +592,8 @@ function pasteHtmlAtCaret(e,newHtml) {
         var elt = e;
         var sel;
         var tempText = newHtml;
+        var spaceCount = 0;
+        var newLinesCount = 0;
         if (elt.isContentEditable) {  // for contenteditable
             sel = document.getSelection();
             sel.modify("extend", "forward", "word");
@@ -604,8 +606,15 @@ function pasteHtmlAtCaret(e,newHtml) {
                         if(firstChar !== "\n"){
                             if (firstChar.trim() === ""){
                                 isBackwardDelete = false;
+//                                var stttttt = "1pasteHtmlAtCaretCallBack:A isBackwardDelete false" + sel.toString() + spaceCount.toString();
+//                                RE.callback(stttttt);
                             }
+                            spaceCount = spaceCount + sel.toString().split(' ').length +  sel.toString().split(' ').length - 2
+                            newLinesCount = newLinesCount + sel.toString().split('\n').length - 1;
+//                            var stttttt = "1pasteHtmlAtCaretCallBack:B isBackwardDelete true" + sel.toString() + spaceCount.toString() + newLinesCount.toString();
+//                            RE.callback(stttttt);
                             range.deleteContents();
+
                         }
                     }
                 }
@@ -618,15 +627,22 @@ function pasteHtmlAtCaret(e,newHtml) {
                 while(isbOOlTemp){
                     sel1 = document.getSelection();
                     var endNode = sel1.focusNode, endOffset = sel1.focusOffset;
+                    var isLoopEntered = false;
                     for (i = 0; i < n; i++) {
-                      sel1.modify("move", "backward", "word");
+                        sel1.modify("move", "backward", "word");
+                        isLoopEntered = true;
                     }
                     sel1.modify("extend", "backward", "word");
                     sel1.extend(endNode, endOffset)
+                    if (isLoopEntered == true){
+                        if (sel1.toString() == ""){
+                            isbOOlTemp = false;
+                            tempText = newHtml + " ";
+                        }
+                    }
                     var selRange = sel1.toString();
                     if (selRange){
                         if (selRange.trim() !== ""){
-                            
                             isbOOlTemp = false
                         }else{
                             n = n+1;
@@ -634,17 +650,20 @@ function pasteHtmlAtCaret(e,newHtml) {
                     }else{
                         n = n+1;
                     }
-                    RE.callback("Still while loop");
                 }
                 var range1 = sel1.getRangeAt(0);
-                var selSTring = sel.toString()[sel.toString().length - 1];
-                if (selSTring != "\n"){
+                spaceCount = spaceCount + sel1.toString().split(' ').length +  sel1.toString().split(' ').length - 2
+                newLinesCount = newLinesCount + sel1.toString().split('\n').length - 1;
+//                var stttttt = "1pasteHtmlAtCaretCallBack:C isBackwardDelete true" + sel1.toString() + spaceCount.toString() + newLinesCount.toString();
+//                RE.callback(stttttt);
+//                var selSTring = sel1.toString()[sel1.toString().length - 1];
+//                if (selSTring != "\n"){
                     range1.deleteContents();
-                }
+//                }
                 range1.collapse(true);
             }
             var el = document.createElement("div");
-            el.innerHTML = tempText;
+            el.innerHTML = newHtml;
             var frag = document.createDocumentFragment(), node,lastNode;
             while (node = el.firstChild) {
                 lastNode = frag.appendChild(node);
@@ -657,7 +676,29 @@ function pasteHtmlAtCaret(e,newHtml) {
                 sel.removeAllRanges();
                 sel.addRange(range);
             }
-            range.collapse();
+            if(spaceCount > 0 || newLinesCount > 1){
+                var j = 0,k = 1;
+                var tempStr = "";
+                for(j=0;j<spaceCount;j++){
+                    tempStr = tempStr + "&nbsp;";
+                }
+                for(k=1;k<newLinesCount;k++){
+                    tempStr = tempStr + "</br>";
+                }
+                var el1 = document.createElement("div");
+                el1.innerHTML = tempStr;
+                var frag1 = document.createDocumentFragment(), node1,lastNode1;
+                while (node1 = el1.firstChild) {
+                    lastNode1 = frag1.appendChild(node1);
+                }
+                range.insertNode(frag1);
+                if (lastNode1) {
+                    range = range.cloneRange();
+                    range.setStartAfter(lastNode1);
+                    range.collapse(true);
+                }
+                range.collapse();
+            }
         }
     }else{
         var sel, range;

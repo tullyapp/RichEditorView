@@ -668,12 +668,11 @@ private let DefaultInnerLineHeight: Int = 28
     /// - parameter method: String with the name of the method and optional parameters that were passed in
     private func performCommand(_ method: String) {
         //Still while loop
-//        if method.contains("1pasteHtmlAtCaretCallBack"){
-//            print("method",method)
-//        }else if method.hasPrefix("Still while loop") {
-//            print("Still while loop")
-//         }else
-        if method.hasPrefix("ready") {
+        if method.contains("1pasteHtmlAtCaretCallBack"){
+            print("method",method)
+        }else if method.hasPrefix("Still while loop") {
+            print("Still while loop")
+        }else if method.hasPrefix("ready") {
            // If loading for the first time, we have to set the content HTML to be displayed
            if !isEditorLoaded {
                 isEditorLoaded = true
@@ -708,7 +707,7 @@ private let DefaultInnerLineHeight: Int = 28
                 }
             }
             runJS("RE.getCursrPositionValue()") { r in
-                print("getCursrPositionValue,",r)
+                print("getCursrPositionValue,",r,"End")
                 self.delegate?.getRhymeWord?(r)
             }
 
@@ -740,7 +739,7 @@ private let DefaultInnerLineHeight: Int = 28
             delegate?.textCopied?(self)
         }else{
             runJS("RE.getCursrPositionValue()") { r in
-                print("getCursrPositionValue,",r)
+                print("getCursrPositionValue,",r,"End")
                 self.delegate?.getRhymeWord?(r)
             }
             self.checkEvents()

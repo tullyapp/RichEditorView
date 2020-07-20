@@ -594,6 +594,7 @@ function pasteHtmlAtCaret(e,newHtml) {
         var tempText = newHtml;
         var spaceCount = 0;
         var newLinesCount = 0;
+        var cursorWord = getLastWord().trim();
         if (elt.isContentEditable) {  // for contenteditable
             sel = document.getSelection();
             sel.modify("extend", "forward", "word");
@@ -604,6 +605,15 @@ function pasteHtmlAtCaret(e,newHtml) {
                 if (firstChar !== " "){
                     if (firstChar !== " ") {
                         if(firstChar !== "\n"){
+                            var lastIndexWord = "";
+                            if (cursorWord.length > 0){
+                                lastIndexWord = cursorWord.split(' ');
+                                if(lastIndexWord == sel.toString()){
+                                    isBackwardDelete = false;
+                                }
+                            }
+//                            var stttttt1 = "1pasteHtmlAtCaretCallBack:!!E Last and selected word" + ":" + cursorWord + ":" + sel.toString() + ":" + lastIndexWord;
+//                            RE.callback(stttttt1);
                             if (firstChar.trim() === ""){
                                 isBackwardDelete = false;
 //                                var stttttt = "1pasteHtmlAtCaretCallBack:A isBackwardDelete false" + sel.toString() + spaceCount.toString();

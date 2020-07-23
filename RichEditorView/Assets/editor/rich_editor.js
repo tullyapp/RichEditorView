@@ -579,11 +579,10 @@ function getLastWord(){
                 }
                 if (((prefixString[prefixString.length-1] === " ") || (prefixString[prefixString.length-1] === " ")) && (shortString2[0] !== "undefined") && !((shortString2[0] === " ") || (shortString2[0] === " "))){
                     let tempString = shortString2.replace(/^\s+|\s+$/g, "");
+                    isBackwardShouldDelete = false;
                     if (tempString.length == 0){
-                        isBackwardShouldDelete = true;
                         return lastword;
                     }
-                    isBackwardShouldDelete = false;
                     return tempString.split(" ")[0];
                 }
                 isBackwardShouldDelete = true;

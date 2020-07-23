@@ -547,6 +547,14 @@ function getLastWord(){
         if(text){
         }else{
             isBackwardShouldDelete = true;
+            if (typeof text == "undefined"){
+                isBackwardShouldDelete = true;
+                if(getTextUntilCursor() != ""){
+                    var tempStr = getTextUntilCursor().trim().split(' ');
+                    return tempStr[tempStr.length - 1];
+                }
+                return "\n";
+            }
             return "";
         }
         if(RE.editor.contentEditable == "true"){

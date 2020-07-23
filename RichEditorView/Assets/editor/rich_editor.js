@@ -544,14 +544,39 @@ function getLastWord(){
         var range = selection.getRangeAt(0);
         var text = range.startContainer.data;
         var index = range.endOffset;
+        if(text){
+        }else{
+            isBackwardShouldDelete = true;
+            return "";
+        }
         if(RE.editor.contentEditable == "true"){
             if (index > 0 && (text[index - 1] == ' ' || text.charCodeAt(index - 1) == 160)) {
                 // Click after a space
+                if(index == text.length){
+                    if(range.startContainer.nextSibling){
+                        if(range.startContainer.nextSibling.innerText){
+                            var nextSibling = range.startContainer.nextSibling.innerText
+                            isBackwardShouldDelete = false;
+                            return nextSibling.trim().split(" ")[0];
+                        }else if (range.startContainer.nextSibling.data){
+                            var nextSibling = range.startContainer.nextSibling.data
+                            isBackwardShouldDelete = false;
+                            return nextSibling.trim().split(" ")[0];
+                        }
+                    }
+                }
                 var text = range.startContainer.data;
                 var prefixString = text.substring(0,index)
                 var shortString = prefixString.replace(/^\s+|\s+$/g, "");
                 var shortString2 = text.substring(index,text.length);
-                var lastword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
+                var lastword = ""
+                if(shortString == ""){
+                    lastword = shortString2.trim().split(" ")[0]
+                    isBackwardShouldDelete = false;
+                    return lastword;
+                }else{
+                    lastword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
+                }
                 if (((prefixString[prefixString.length-1] === " ") || (prefixString[prefixString.length-1] === " ")) && (shortString2[0] !== "undefined") && !((shortString2[0] === " ") || (shortString2[0] === " "))){
                     let tempString = shortString2.replace(/^\s+|\s+$/g, "");
                     if (tempString.length == 0){
@@ -566,6 +591,10 @@ function getLastWord(){
             }else {
                 if (typeof text == "undefined"){
                     isBackwardShouldDelete = true;
+                    if(getTextUntilCursor() != ""){
+                        var tempStr = getTextUntilCursor().trim().split(' ');
+                        return tempStr[tempStr.length - 1];
+                    }
                     return "\n";
                 }
                 var text = range.startContainer.data;
@@ -580,6 +609,9 @@ function getLastWord(){
                 isBackwardShouldDelete = true;
                 return lastword + addWord;
             }
+        }else{
+            isBackwardShouldDelete = true;
+            return "";
         }
     }else{
         isBackwardShouldDelete = true;
@@ -612,6 +644,24 @@ function pasteHtmlAtCaret(e,newHtml) {
                                     isBackwardDelete = false;
                                 }
                             }
+//                            if(sel.toString()[sel.toString().length-1]){
+//                                if ((sel.toString()[sel.toString().length-1] == 'undefined') || (sel.toString()[sel.toString().length-1] == '\n')){
+//                                    sel.modify("extend", "backward", "character");
+//                                    sel.modify("extend", "backward", "character");
+//                                    var stttttt11 = "1pasteHtmlAtCaretCallBack:!!E Last word was new line " + sel.toString() + (sel.toString()[sel.toString().length-1]);
+//                                    RE.callback(stttttt11);
+//                                }
+//                            }else{
+//                                var stttttt11 = "1pasteHtmlAtCaretCallBack:!!E Last word was new line undefined" + sel.toString() + (sel.toString()[sel.toString().length-1]);
+//                                RE.callback(stttttt11);
+//                            }
+
+//                            if((sel.toString().charAt(sel.toString()-1)) == "\n"){
+//                                var stttttt1 = "1pasteHtmlAtCaretCallBack:!!E Last word was new line " + ;
+//                                RE.callback(stttttt1);
+//                            }
+//                            sel.modify("extend", "backward", "character");
+                            
 //                            var stttttt1 = "1pasteHtmlAtCaretCallBack:!!E Last and selected word" + ":" + cursorWord + ":" + sel.toString() + ":" + lastIndexWord;
 //                            RE.callback(stttttt1);
                             if (firstChar.trim() === ""){
@@ -666,10 +716,7 @@ function pasteHtmlAtCaret(e,newHtml) {
                 newLinesCount = newLinesCount + sel1.toString().split('\n').length - 1;
 //                var stttttt = "1pasteHtmlAtCaretCallBack:C isBackwardDelete true" + sel1.toString() + spaceCount.toString() + newLinesCount.toString();
 //                RE.callback(stttttt);
-//                var selSTring = sel1.toString()[sel1.toString().length - 1];
-//                if (selSTring != "\n"){
-                    range1.deleteContents();
-//                }
+                range1.deleteContents();
                 range1.collapse(true);
             }
             var el = document.createElement("div");
@@ -690,7 +737,7 @@ function pasteHtmlAtCaret(e,newHtml) {
                 var j = 0,k = 1;
                 var tempStr = "";
                 for(j=0;j<spaceCount;j++){
-                    tempStr = tempStr + "&nbsp;";
+                    tempStr = tempStr + " ";
                 }
                 for(k=1;k<newLinesCount;k++){
                     tempStr = tempStr + "</br>";
@@ -738,4 +785,14 @@ function pasteHtmlAtCaret(e,newHtml) {
             document.selection.createRange().pasteHTML(html);
         }
     }
+}
+
+function getTextUntilCursor() {
+    var str = 0;
+    var range = window.getSelection().getRangeAt(0);
+    var preCaretRange = range.cloneRange();
+    preCaretRange.selectNodeContents(RE.editor);
+    preCaretRange.setEnd(range.endContainer, range.endOffset);
+    str = preCaretRange.toString();
+    return str;
 }

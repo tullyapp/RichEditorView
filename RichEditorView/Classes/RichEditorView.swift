@@ -779,27 +779,27 @@ private let DefaultInnerLineHeight: Int = 28
     func checkEvents(){
         self.isBold { (str) in
             self.delegate?.getIsBold?((str == "1" || str == "true")  ? true : false)
-            print("printbold",((str == "1" || str == "true")  ? true : false))
+//            print("printbold",((str == "1" || str == "true")  ? true : false))
         }
         self.isItalic { (str) in
             self.delegate?.getIsItalic?((str == "1" || str == "true")  ? true : false)
-            print("printisItalic",((str == "1" || str == "true")  ? true : false))
+//            print("printisItalic",((str == "1" || str == "true")  ? true : false))
         }
         self.isUnderLine { (str) in
             self.delegate?.getIsUnderLine?((str == "1" || str == "true")  ? true : false)
-            print("printisUnderLine",((str == "1" || str == "true")  ? true : false))
+//            print("printisUnderLine",((str == "1" || str == "true")  ? true : false))
         }
         self.isStrike { (str) in
             self.delegate?.getIsStrike?((str == "1" || str == "true")  ? true : false)
-            print("printisStrike",((str == "1" || str == "true")  ? true : false))
+//            print("printisStrike",((str == "1" || str == "true")  ? true : false))
         }
         self.getColor { (str) in
             self.delegate?.getColor?(str)
-            print("printgetColor",str)
+//            print("printgetColor",str)
         }
         self.getFont { (str) in
             self.delegate?.getFont?(str)
-            print("printgetFont",str)
+//            print("printgetFont",str)
         }
     }
 

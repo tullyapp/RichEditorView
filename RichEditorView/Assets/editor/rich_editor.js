@@ -567,9 +567,24 @@ function getLastWord(){
                             isBackwardShouldDelete = false;
                             return nextSibling.trim().split(" ")[0];
                         }else if (range.startContainer.nextSibling.data){
-                            var nextSibling = range.startContainer.nextSibling.data
-                            isBackwardShouldDelete = false;
-                            return nextSibling.trim().split(" ")[0];
+                            var nextSiblingData = (range.startContainer.nextSibling.data).replace(/^\s+|\s+$/g, "");
+                            if (nextSiblingData == ""){
+                                if(range.startContainer.previousSibling){
+                                    if(range.startContainer.previousSibling.innerText){
+                                        var previousSibling = range.startContainer.previousSibling.innerText
+                                        isBackwardShouldDelete = false;
+                                        return previousSibling.trim().split(" ")[0];
+                                    }else if (range.startContainer.previousSibling.data){
+                                        var previousSibling = range.startContainer.previousSibling.data
+                                        isBackwardShouldDelete = true;
+                                        return previousSibling.trim().split(" ")[0];
+                                    }
+                                }
+                            }else{
+                                var nextSibling = range.startContainer.nextSibling.data
+                                isBackwardShouldDelete = false;
+                                return nextSibling.trim().split(" ")[0];
+                            }
                         }
                     }
                 }
@@ -585,7 +600,7 @@ function getLastWord(){
                 }else{
                     lastword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
                 }
-                if (((prefixString[prefixString.length-1] === " ") || (prefixString[prefixString.length-1] === " ")) && (shortString2[0] !== "undefined") && !((shortString2[0] === " ") || (shortString2[0] === " "))){
+                if (((prefixString[prefixString.length-1] === " ") || (prefixString[prefixString.length-1] === " ")) && (typeof shortString2[0] !== "undefined") && !((shortString2[0] === " ") || (shortString2[0] === " "))){
                     let tempString = shortString2.replace(/^\s+|\s+$/g, "");
                     isBackwardShouldDelete = false;
                     if (tempString.length == 0){

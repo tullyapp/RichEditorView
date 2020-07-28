@@ -544,10 +544,10 @@ function getLastWord(){
         var range = selection.getRangeAt(0);
         var text = range.startContainer.data;
         var index = range.endOffset;
-        if(text){
+        if(text && text.replace(/^\s+|\s+$/g, "") !== ""){
         }else{
             isBackwardShouldDelete = true;
-            if (typeof text == "undefined"){
+            if ((typeof text == "undefined") || (text.replace(/^\s+|\s+$/g, "") == "")){
                 isBackwardShouldDelete = true;
                 if(getTextUntilCursor() != ""){
                     var tempStr = getTextUntilCursor().trim().split(' ');

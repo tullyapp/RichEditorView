@@ -131,6 +131,7 @@ private let DefaultInnerLineHeight: Int = 28
     public var html: String = "" {
         didSet {
             self.lastHtml = html
+            self.contentHTML = html
             setHTML(html)
         }
     }

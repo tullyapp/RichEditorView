@@ -30,7 +30,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
-        // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+        // Called as part of the transitio
+        let pasteBoardString = UIPasteboard.general.string
+        UIPasteboard.general.items = [[String : Any]]()
+        if let pasteString = pasteBoardString{
+            UIPasteboard.general.string = pasteString
+            print("pasteed String",pasteString)
+        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

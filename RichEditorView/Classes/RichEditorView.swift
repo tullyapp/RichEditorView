@@ -59,6 +59,8 @@ private let DefaultInnerLineHeight: Int = 28
     @objc optional func getIsStrike(_ isStrike: Bool)
     
     @objc optional func getIsUnderLine(_ isUnderLine: Bool)
+    
+    @objc optional func getRhymeWord(_ word: String)
 
 }
 
@@ -129,6 +131,7 @@ private let DefaultInnerLineHeight: Int = 28
     public var html: String = "" {
         didSet {
             self.lastHtml = html
+            self.contentHTML = html
             setHTML(html)
         }
     }
@@ -187,12 +190,34 @@ private let DefaultInnerLineHeight: Int = 28
     @objc private func viewWasTapped() {
         if !webView.containsFirstResponder {
             let point = tapRecognizer.location(in: webView)
-            focus(at: point)
-            self.checkEvents()
+            getText { (str, loading) in
+                var height : CGFloat = 0.0
+                if let font = UIFont(name: "Avenir-Medium", size: 16.0){
+                    height = str.heightWithConstrainedWidth(width: self.webView.frame.width, font: font) + (height/21.0)
+                }
+                if point.y <= height{
+                    self.focus(at: point)
+                }else{
+                    self.focus()
+                }
+                self.checkEvents()
+                self.performCommand("input")
+            }
         }else if !isOpenKeyBoard{
             let point = tapRecognizer.location(in: webView)
-            focus(at: point)
-            self.checkEvents()
+            getText { (str, loading) in
+                var height : CGFloat = 0.0
+                if let font = UIFont(name: "Avenir-Medium", size: 16.0){
+                    height = str.heightWithConstrainedWidth(width: self.webView.frame.width, font: font) + (height/21.0)
+                }
+                if point.y <= height{
+                    self.focus(at: point)
+                }else{
+                    self.focus()
+                }
+                self.checkEvents()
+                self.performCommand("input")
+            }
         }
     }
 
@@ -214,9 +239,9 @@ private let DefaultInnerLineHeight: Int = 28
             UIMenuController.shared.menuItems = [rhyme]
         }
     }
-       func hideRhyme(){
-              UIMenuController.shared.menuItems = []
-       }
+   func hideRhyme(){
+          UIMenuController.shared.menuItems = []
+   }
     public func getselectedPosition(handler: @escaping (String) -> Void) {
         runJS("RE.selectedPosition();") { r in
             handler(r)
@@ -264,21 +289,21 @@ private let DefaultInnerLineHeight: Int = 28
 //        return runJS("RE.rangeOrCaretSelectionExists();") == "true" ? true : false
 //    }
 
-    // MARK: Methods
-    /// Whether or not the selection has a type specifically of "Range".
-       public func hasRangeSelection(handler: @escaping (Bool) -> Void) {
-           runJS("RE.rangeSelectionExists()") { r in
-               handler((r == "1" || r == "true")  ? true : false)
-           }
-       }
-       
-       /// Whether or not the selection has a type specifically of "Range" or "Caret".
-       public func hasRangeOrCaretSelection(handler: @escaping (Bool) -> Void) {
-           runJS("RE.rangeOrCaretSelectionExists()") { r in
-               handler((r == "1" || r == "true") ? true : false)
-           }
-       }
-       
+// MARK: Methods
+/// Whether or not the selection has a type specifically of "Range".
+    public func hasRangeSelection(handler: @escaping (Bool) -> Void) {
+        runJS("RE.rangeSelectionExists()") { r in
+            handler((r == "1" || r == "true")  ? true : false)
+        }
+    }
+    
+    /// Whether or not the selection has a type specifically of "Range" or "Caret".
+    public func hasRangeOrCaretSelection(handler: @escaping (Bool) -> Void) {
+        runJS("RE.rangeOrCaretSelectionExists()") { r in
+            handler((r == "1" || r == "true") ? true : false)
+        }
+    }
+    
     public func removeFormat() {
         runJS("RE.removeFormat();")
     }
@@ -334,6 +359,15 @@ private let DefaultInnerLineHeight: Int = 28
     public func replaceRhyme(_ rhyme: String) {
         runJS("RE.replace('\(rhyme)');")
         runJS("RE.focusAtPoint(\(xPosition), \(yPosition));")
+    }
+    
+    public func replaceRhymeWord(_ rhyme: String){
+        runJS("RE.replaceRhyme('\(rhyme)');")
+        self.performCommand("input")
+    }
+    
+    public func rhymeModeEnable(){
+        self.scrollCaretToVisible()
     }
     
     public func setEditorFontColor(_ color: UIColor) {
@@ -403,6 +437,9 @@ private let DefaultInnerLineHeight: Int = 28
         runJS("RE.blurFocus()")
     }
 
+    public func selectRannge(word: String) {
+        runJS("RE.selectElementContents('\(word)');")
+    }
     /// Runs some JavaScript on the UIWebView and returns the result
     /// If there is no result, returns an empty string
     /// - parameter js: The JavaScript string to be run
@@ -631,7 +668,13 @@ private let DefaultInnerLineHeight: Int = 28
     /// Called when actions are received from JavaScript
     /// - parameter method: String with the name of the method and optional parameters that were passed in
     private func performCommand(_ method: String) {
-         if method.hasPrefix("ready") {
+        //Still while loop
+//        if method.contains("1pasteHtmlAtCaretCallBack"){
+//            print("method",method)
+//        }else if method.hasPrefix("Still while loop") {
+//            print("Still while loop")
+//        }else
+        if method.hasPrefix("ready") {
            // If loading for the first time, we have to set the content HTML to be displayed
            if !isEditorLoaded {
                 isEditorLoaded = true
@@ -665,6 +708,11 @@ private let DefaultInnerLineHeight: Int = 28
                     }
                 }
             }
+            runJS("RE.getCursrPositionValue()") { r in
+//                print("getCursrPositionValue,",r,"End")
+                self.delegate?.getRhymeWord?(r)
+            }
+
         }
         else if method.hasPrefix("updateHeight") {
             updateHeight()
@@ -689,24 +737,13 @@ private let DefaultInnerLineHeight: Int = 28
                 
                 self.delegate?.richEditor?(self, handle: action)
             }
-        }else if method.hasPrefix("selectionchange") {
-            hasRangeSelection(handler: { r in
-                if !r {
-                    self.hideRhyme()
-                    return
-                }
-                self.getSelectedText { (selectedText) in
-                    let text = selectedText.trimmingCharacters(in: .whitespacesAndNewlines)
-                    if text.contains(" "){
-                        self.hideRhyme()
-                    }else{
-                        self.showRhyme()
-                    }
-                }
-            })
         }else if method.hasPrefix("copy") {
             delegate?.textCopied?(self)
         }else{
+            runJS("RE.getCursrPositionValue()") { r in
+//                print("getCursrPositionValue,",r,"End")
+                self.delegate?.getRhymeWord?(r)
+            }
             self.checkEvents()
         }
     }
@@ -743,27 +780,27 @@ private let DefaultInnerLineHeight: Int = 28
     func checkEvents(){
         self.isBold { (str) in
             self.delegate?.getIsBold?((str == "1" || str == "true")  ? true : false)
-            print("printbold",((str == "1" || str == "true")  ? true : false))
+//            print("printbold",((str == "1" || str == "true")  ? true : false))
         }
         self.isItalic { (str) in
             self.delegate?.getIsItalic?((str == "1" || str == "true")  ? true : false)
-            print("printisItalic",((str == "1" || str == "true")  ? true : false))
+//            print("printisItalic",((str == "1" || str == "true")  ? true : false))
         }
         self.isUnderLine { (str) in
             self.delegate?.getIsUnderLine?((str == "1" || str == "true")  ? true : false)
-            print("printisUnderLine",((str == "1" || str == "true")  ? true : false))
+//            print("printisUnderLine",((str == "1" || str == "true")  ? true : false))
         }
         self.isStrike { (str) in
             self.delegate?.getIsStrike?((str == "1" || str == "true")  ? true : false)
-            print("printisStrike",((str == "1" || str == "true")  ? true : false))
+//            print("printisStrike",((str == "1" || str == "true")  ? true : false))
         }
         self.getColor { (str) in
             self.delegate?.getColor?(str)
-            print("printgetColor",str)
+//            print("printgetColor",str)
         }
         self.getFont { (str) in
             self.delegate?.getFont?(str)
-            print("printgetFont",str)
+//            print("printgetFont",str)
         }
     }
 
@@ -781,4 +818,38 @@ private let DefaultInnerLineHeight: Int = 28
         return true
     }
 
+}
+
+
+extension String {
+    
+    var length: Int {
+        return count
+    }
+    
+    subscript (i: Int) -> String {
+        return self[i ..< i + 1]
+    }
+    
+    func substring(fromIndex: Int) -> String {
+        return self[min(fromIndex, length) ..< length]
+    }
+    
+    func substring(toIndex: Int) -> String {
+        return self[0 ..< max(0, toIndex)]
+    }
+    
+    subscript (r: Range<Int>) -> String {
+        let range = Range(uncheckedBounds: (lower: max(0, min(length, r.lowerBound)),
+                                            upper: min(length, max(0, r.upperBound))))
+        let start = index(startIndex, offsetBy: range.lowerBound)
+        let end = index(start, offsetBy: range.upperBound - range.lowerBound)
+        return String(self[start ..< end])
+    }
+    
+    func heightWithConstrainedWidth(width: CGFloat, font: UIFont) -> CGFloat {
+        let constraintRect = CGSize(width: width, height: .greatestFiniteMagnitude)
+        let boundingBox = self.boundingRect(with: constraintRect, options: [.usesLineFragmentOrigin, .usesFontLeading], attributes: [NSAttributedStringKey.font: font], context: nil)
+        return boundingBox.height
+    }
 }

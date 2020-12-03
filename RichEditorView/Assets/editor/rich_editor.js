@@ -16,6 +16,7 @@
  "use strict";
 
 var RE = {};
+var isBackwardShouldDelete = true;
 
 window.onload = function() {
     RE.callback("ready");
@@ -468,16 +469,25 @@ function getRectForSelectedText() {
 
 RE.editor.addEventListener("click", function() {
     RE.callback("click");
+//    RE.getCursrPositionValue();
 });
 RE.editor.addEventListener("touchend", function() {
     RE.callback("touch");
+//    RE.getCursrPositionValue();
 });
 RE.editor.addEventListener("touchstart", function() {
     RE.callback("touch");
+//    RE.getCursrPositionValue();
 });
 
 RE.editor.addEventListener("touchmove", function() {
     RE.callback("touch");
+//    RE.getCursrPositionValue();
+});
+
+RE.editor.addEventListener("onmousemove", function() {
+    RE.callback("touch");
+//    RE.getCursrPositionValue();
 });
 
 
@@ -509,6 +519,14 @@ RE.getFontSize = function() {
     return fontSize
 };
 
+RE.getCursrPositionValue = function() {
+    return getLastWord();
+};
+
+RE.replaceRhyme = function(str) {
+    pasteHtmlAtCaret(RE.editor,str);
+};
+
 function rgbToHex(rgb) {
    var a = rgb.split("(")[1].split(")")[0];
     a = a.split(",");
@@ -518,4 +536,285 @@ function rgbToHex(rgb) {
     });
     b = b.join("");
     return b;
+}
+
+function getLastWord(){
+    var selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+        var range = selection.getRangeAt(0);
+        var text = range.startContainer.data;
+        var index = range.endOffset;
+        if(text && text.replace(/^\s+|\s+$/g, "") !== ""){
+        }else{
+            isBackwardShouldDelete = true;
+            if ((typeof text == "undefined") || (text.replace(/^\s+|\s+$/g, "") == "")){
+                isBackwardShouldDelete = true;
+                if(getTextUntilCursor() != ""){
+                    var tempStr = getTextUntilCursor().trim().split(' ');
+                    return tempStr[tempStr.length - 1];
+                }
+                return "\n";
+            }
+            return "";
+        }
+        if(RE.editor.contentEditable == "true"){
+            if (index > 0 && (text[index - 1] == ' ' || text.charCodeAt(index - 1) == 160)) {
+                // Click after a space
+                if(index == text.length){
+                    if(range.startContainer.nextSibling){
+                        if(range.startContainer.nextSibling.innerText){
+                            var nextSibling = range.startContainer.nextSibling.innerText
+                            isBackwardShouldDelete = false;
+                            return nextSibling.trim().split(" ")[0];
+                        }else if (range.startContainer.nextSibling.data){
+                            var nextSiblingData = (range.startContainer.nextSibling.data).replace(/^\s+|\s+$/g, "");
+                            if (nextSiblingData == ""){
+                                if(range.startContainer.previousSibling){
+                                    if(range.startContainer.previousSibling.innerText){
+                                        var previousSibling = range.startContainer.previousSibling.innerText
+                                        isBackwardShouldDelete = false;
+                                        return previousSibling.trim().split(" ")[0];
+                                    }else if (range.startContainer.previousSibling.data){
+                                        var previousSibling = range.startContainer.previousSibling.data
+                                        isBackwardShouldDelete = true;
+                                        return previousSibling.trim().split(" ")[0];
+                                    }
+                                }
+                            }else{
+                                var nextSibling = range.startContainer.nextSibling.data
+                                isBackwardShouldDelete = false;
+                                return nextSibling.trim().split(" ")[0];
+                            }
+                        }
+                    }
+                }
+                var text = range.startContainer.data;
+                var prefixString = text.substring(0,index)
+                var shortString = prefixString.replace(/^\s+|\s+$/g, "");
+                var shortString2 = text.substring(index,text.length);
+                var lastword = ""
+                if(shortString == ""){
+                    lastword = shortString2.trim().split(" ")[0]
+                    isBackwardShouldDelete = false;
+                    return lastword;
+                }else{
+                    lastword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
+                }
+                if (((prefixString[prefixString.length-1] === " ") || (prefixString[prefixString.length-1] === " ")) && (typeof shortString2[0] !== "undefined") && !((shortString2[0] === " ") || (shortString2[0] === " "))){
+                    let tempString = shortString2.replace(/^\s+|\s+$/g, "");
+                    isBackwardShouldDelete = false;
+                    if (tempString.length == 0){
+                        return lastword;
+                    }
+                    return tempString.split(" ")[0];
+                }
+                isBackwardShouldDelete = true;
+                return lastword;
+            }else {
+                if (typeof text == "undefined"){
+                    isBackwardShouldDelete = true;
+                    if(getTextUntilCursor() != ""){
+                        var tempStr = getTextUntilCursor().trim().split(' ');
+                        return tempStr[tempStr.length - 1];
+                    }
+                    return "\n";
+                }
+                var text = range.startContainer.data;
+                var shortString = text.substring(0,index);
+                var shortString2 = text.substring(index,text.length);
+                var lastword = shortString.substring(shortString.lastIndexOf(" ", shortString.lanth -1),shortString.length);
+                var addWord = "";
+                if (shortString2[0] !== " " && shortString2[0]  !== "undefined"){
+                   let tempString = shortString2.replace(/^\s+|\s+$/g, "");
+                   addWord = tempString.split(" ")[0];
+                }
+                isBackwardShouldDelete = true;
+                return lastword + addWord;
+            }
+        }else{
+            isBackwardShouldDelete = true;
+            return "";
+        }
+    }else{
+        isBackwardShouldDelete = true;
+        return "";
+    }
+}
+
+function pasteHtmlAtCaret(e,newHtml) {
+    if (RE.getSelectedText() == "" || RE.getSelectedText() == "undefined"){
+        var elt = e;
+        var sel;
+        var tempText = newHtml;
+        var spaceCount = 0;
+        var newLinesCount = 0;
+        var cursorWord = getLastWord().trim();
+        if (elt.isContentEditable) {  // for contenteditable
+            sel = document.getSelection();
+            sel.modify("extend", "forward", "word");
+            var range = sel.getRangeAt(0);
+            let firstChar = sel.toString()[0];
+            var isBackwardDelete = true;
+            if (firstChar){
+                if (firstChar !== " "){
+                    if (firstChar !== " ") {
+                        if(firstChar !== "\n"){
+                            var lastIndexWord = "";
+                            if (cursorWord.length > 0){
+                                lastIndexWord = cursorWord.split(' ');
+                                if(lastIndexWord == sel.toString()){
+                                    isBackwardDelete = false;
+                                }
+                            }
+//                            if(sel.toString()[sel.toString().length-1]){
+//                                if ((sel.toString()[sel.toString().length-1] == 'undefined') || (sel.toString()[sel.toString().length-1] == '\n')){
+//                                    sel.modify("extend", "backward", "character");
+//                                    sel.modify("extend", "backward", "character");
+//                                    var stttttt11 = "1pasteHtmlAtCaretCallBack:!!E Last word was new line " + sel.toString() + (sel.toString()[sel.toString().length-1]);
+//                                    RE.callback(stttttt11);
+//                                }
+//                            }else{
+//                                var stttttt11 = "1pasteHtmlAtCaretCallBack:!!E Last word was new line undefined" + sel.toString() + (sel.toString()[sel.toString().length-1]);
+//                                RE.callback(stttttt11);
+//                            }
+
+//                            if((sel.toString().charAt(sel.toString()-1)) == "\n"){
+//                                var stttttt1 = "1pasteHtmlAtCaretCallBack:!!E Last word was new line " + ;
+//                                RE.callback(stttttt1);
+//                            }
+//                            sel.modify("extend", "backward", "character");
+                            
+//                            var stttttt1 = "1pasteHtmlAtCaretCallBack:!!E Last and selected word" + ":" + cursorWord + ":" + sel.toString() + ":" + lastIndexWord;
+//                            RE.callback(stttttt1);
+                            if (firstChar.trim() === ""){
+                                isBackwardDelete = false;
+//                                var stttttt = "1pasteHtmlAtCaretCallBack:A isBackwardDelete false" + sel.toString() + spaceCount.toString();
+//                                RE.callback(stttttt);
+                            }
+                            spaceCount = spaceCount + sel.toString().split(' ').length +  sel.toString().split(' ').length - 2
+                            newLinesCount = newLinesCount + sel.toString().split('\n').length - 1;
+//                            var stttttt = "1pasteHtmlAtCaretCallBack:B isBackwardDelete true" + sel.toString() + spaceCount.toString() + newLinesCount.toString();
+//                            RE.callback(stttttt);
+                            range.deleteContents();
+
+                        }
+                    }
+                }
+            }
+            range.collapse(true);
+            if((isBackwardDelete == true) && (isBackwardShouldDelete == true)){
+                var sel1;
+                var i = 0, n =0;
+                var isbOOlTemp = true;
+                while(isbOOlTemp){
+                    sel1 = document.getSelection();
+                    var endNode = sel1.focusNode, endOffset = sel1.focusOffset;
+                    var isLoopEntered = false;
+                    for (i = 0; i < n; i++) {
+                        sel1.modify("move", "backward", "word");
+                        isLoopEntered = true;
+                    }
+                    sel1.modify("extend", "backward", "word");
+                    sel1.extend(endNode, endOffset)
+                    if (isLoopEntered == true){
+                        if (sel1.toString() == ""){
+                            isbOOlTemp = false;
+                            tempText = newHtml + " ";
+                        }
+                    }
+                    var selRange = sel1.toString();
+                    if (selRange){
+                        if (selRange.trim() !== ""){
+                            isbOOlTemp = false
+                        }else{
+                            n = n+1;
+                        }
+                    }else{
+                        n = n+1;
+                    }
+                }
+                var range1 = sel1.getRangeAt(0);
+                spaceCount = spaceCount + sel1.toString().split(' ').length +  sel1.toString().split(' ').length - 2
+                newLinesCount = newLinesCount + sel1.toString().split('\n').length - 1;
+//                var stttttt = "1pasteHtmlAtCaretCallBack:C isBackwardDelete true" + sel1.toString() + spaceCount.toString() + newLinesCount.toString();
+//                RE.callback(stttttt);
+                range1.deleteContents();
+                range1.collapse(true);
+            }
+            var el = document.createElement("div");
+            el.innerHTML = newHtml;
+            var frag = document.createDocumentFragment(), node,lastNode;
+            while (node = el.firstChild) {
+                lastNode = frag.appendChild(node);
+            }
+            range.insertNode(frag);
+            if (lastNode) {
+                range = range.cloneRange();
+                range.setStartAfter(lastNode);
+                range.collapse(true);
+                sel.removeAllRanges();
+                sel.addRange(range);
+            }
+            if(spaceCount > 0 || newLinesCount > 1){
+                var j = 0,k = 1;
+                var tempStr = "";
+                for(j=0;j<spaceCount;j++){
+                    tempStr = tempStr + " ";
+                }
+                for(k=1;k<newLinesCount;k++){
+                    tempStr = tempStr + "</br>";
+                }
+                var el1 = document.createElement("div");
+                el1.innerHTML = tempStr;
+                var frag1 = document.createDocumentFragment(), node1,lastNode1;
+                while (node1 = el1.firstChild) {
+                    lastNode1 = frag1.appendChild(node1);
+                }
+                range.insertNode(frag1);
+                if (lastNode1) {
+                    range = range.cloneRange();
+                    range.setStartAfter(lastNode1);
+                    range.collapse(true);
+                }
+                range.collapse();
+            }
+        }
+    }else{
+        var sel, range;
+        if (window.getSelection) {
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                range = sel.getRangeAt(0);
+                range.deleteContents();
+                var el = document.createElement("div");
+                el.innerHTML = newHtml;
+                var frag = document.createDocumentFragment(), node, lastNode;
+                while ( (node = el.firstChild) ) {
+                    lastNode = frag.appendChild(node);
+                }
+                range.insertNode(frag);
+                
+                // Preserve the selection
+                if (lastNode) {
+                    range = range.cloneRange();
+                    range.setStartAfter(lastNode);
+                    range.collapse(true);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
+            }
+        } else if (document.selection && document.selection.type != "Control") {
+            document.selection.createRange().pasteHTML(html);
+        }
+    }
+}
+
+function getTextUntilCursor() {
+    var str = 0;
+    var range = window.getSelection().getRangeAt(0);
+    var preCaretRange = range.cloneRange();
+    preCaretRange.selectNodeContents(RE.editor);
+    preCaretRange.setEnd(range.endContainer, range.endOffset);
+    str = preCaretRange.toString();
+    return str;
 }

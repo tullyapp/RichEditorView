@@ -152,13 +152,21 @@ private let DefaultInnerLineHeight: Int = 28
     // MARK: Initialization
     
     public override init(frame: CGRect) {
-        webView = RichEditorWebView()
+        let configuration = WKWebViewConfiguration()
+        configuration.allowsAirPlayForMediaPlayback = true
+        configuration.allowsInlineMediaPlayback = true
+        configuration.allowsAirPlayForMediaPlayback = true
+        webView = RichEditorWebView(frame: frame, configuration: configuration)
         super.init(frame: frame)
         setup()
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        webView = RichEditorWebView()
+        let configuration = WKWebViewConfiguration()
+        configuration.allowsAirPlayForMediaPlayback = true
+        configuration.allowsInlineMediaPlayback = true
+        configuration.allowsAirPlayForMediaPlayback = true
+        webView = RichEditorWebView(frame: CGRect(x: 0, y: 0, width: 0, height: 0), configuration: configuration)
         super.init(coder: aDecoder)
         setup()
     }

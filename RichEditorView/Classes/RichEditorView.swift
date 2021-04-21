@@ -492,8 +492,8 @@ private let DefaultInnerLineHeight: Int = 28
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // We use this to keep the scroll view from changing its offset when the keyboard comes up
         // Temp solution for project title
-        if (scrollView.contentOffset.y < -44) {
-            scrollView.setContentOffset(CGPoint(x: 0, y: -44), animated: false)
+        if (scrollView.contentOffset.y < -42) {
+            scrollView.setContentOffset(CGPoint(x: 0, y: -42), animated: false)
         }
         if !isScrollEnabled {
             scrollView.bounds = webView.bounds

@@ -50,7 +50,7 @@ div {
     top: 0px;
     color: #CCCCCC;
     font-size: 14pt;
-    font-family: 'Roboto';
+    font-family: 'Sarabun';
 }
 
 #editor {
@@ -58,7 +58,7 @@ div {
     height: 100%;
     overflow: auto;
     display: block;
-    font-family: 'Roboto';
+    font-family: 'Sarabun';
     color:#0A090C;
     font-weight: normal;
     font-size: 14pt;

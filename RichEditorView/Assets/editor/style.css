@@ -16,6 +16,17 @@
 
 @charset "UTF-8";
 
+@font-face {
+  font-family: 'Sarabun';
+  src: url('Sarabun-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Sarabun';
+    src: url('Sarabun-Bold.ttf');
+    font-weight: bold;
+}
+
 html {
     height: 100%;
 }

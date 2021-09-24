@@ -22,5 +22,24 @@
 	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>NSPrincipalClass</key>
 	<string></string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Sarabun-Bold-Italic.ttf</string>
+		<string>Sarabun-ExtraBold-Italic.ttf</string>
+		<string>Sarabun-ExtraBold.ttf</string>
+		<string>Sarabun-ExtraLight-Italic.ttf</string>
+		<string>Sarabun-ExtraLight.ttf</string>
+		<string>Sarabun-Italic.ttf</string>
+		<string>Sarabun-Light-Italic.ttf</string>
+		<string>Sarabun-Light.ttf</string>
+		<string>Sarabun-Medium-Italic.ttf</string>
+		<string>Sarabun-Medium.ttf</string>
+		<string>Sarabun-Regular.ttf</string>
+		<string>Sarabun-SemiBold-Italic.ttf</string>
+		<string>Sarabun-SemiBold.ttf</string>
+		<string>Sarabun-Thin-Italic.ttf</string>
+		<string>Sarabun-Thin.ttf</string>
+		<string>Sarabun-Bold.ttf</string>
+	</array>
 </dict>
 </plist>
